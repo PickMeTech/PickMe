@@ -57,4 +57,5 @@ build/
 ### VS Code ###
 .vscode/
 
+# Files with secrets
 .env
