@@ -59,6 +59,6 @@ build/
 
 # Files with secrets
 .env
-/src/main/resources/application.properties
-
+# Ignore application.properties
+src/main/resources/application.properties
 

@@ -57,71 +57,38 @@ public class User {
     @Column(name ="post_service", length = 100)
     private String postService;
 
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
-
-    public String getBio() {
-        return bio;
+    // Конструктор за замовчуванням
+    public User() {
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    // Конструктор для зручності створення користувача
+    public User(String username, String password, String phoneNumber, String email, String country, LocalDate birthDate,
+                String profileImageUrl, String bio, String instagramUrl, String telegramUsername, String fullName,
+                String city, String streetAddress, String postCode, String postService) {
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullname(String fullName) {
+        this.country = country;
+        this.birthDate = birthDate;
+        this.profileImageUrl = profileImageUrl;
+        this.bio = bio;
+        this.instagramUrl = instagramUrl;
+        this.telegramUsername = telegramUsername;
         this.fullName = fullName;
+        this.city = city;
+        this.streetAddress = streetAddress;
+        this.postCode = postCode;
+        this.postService = postService;
     }
 
+    // Гетери і сетери
     public Long getId() {
         return id;
     }
@@ -130,12 +97,12 @@ public class User {
         this.id = id;
     }
 
-    public String getInstagramUrl() {
-        return instagramUrl;
+    public String getUsername() {
+        return username;
     }
 
-    public void setInstagramUrl(String instagramUrl) {
-        this.instagramUrl = instagramUrl;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -154,6 +121,86 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getInstagramUrl() {
+        return instagramUrl;
+    }
+
+    public void setInstagramUrl(String instagramUrl) {
+        this.instagramUrl = instagramUrl;
+    }
+
+    public String getTelegramUsername() {
+        return telegramUsername;
+    }
+
+    public void setTelegramUsername(String telegramUsername) {
+        this.telegramUsername = telegramUsername;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
     public String getPostCode() {
         return postCode;
     }
@@ -170,28 +217,12 @@ public class User {
         this.postService = postService;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
-    public String getTelegramUsername() {
-        return telegramUsername;
-    }
-
-    public void setTelegramUsername(String telegramUsername) {
-        this.telegramUsername = telegramUsername;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
@@ -202,12 +233,15 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public String getUsername() {
-        return username;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
     @Override
@@ -222,5 +256,4 @@ public class User {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }
