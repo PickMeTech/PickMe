@@ -58,7 +58,6 @@ build/
 .vscode/
 
 # Files with secrets
-.env
-# Ignore application.properties
-src/main/resources/application.properties
+backend/.env
+
 
