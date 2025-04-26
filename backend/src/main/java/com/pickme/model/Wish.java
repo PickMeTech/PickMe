@@ -12,6 +12,10 @@ public class Wish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "wish_list_id", nullable = false)
+    private WishList wishList;
+
     @Column(unique = true, nullable = false, length = 100)
     private String title;
 
@@ -35,6 +39,14 @@ public class Wish {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public WishList getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(WishList wishList) {
+        this.wishList = wishList;
+    }
 
     public String getUrl() {
         return url;
