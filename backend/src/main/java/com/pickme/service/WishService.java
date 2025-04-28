@@ -42,7 +42,7 @@ public class WishService {
         existingWish.setImageUrl(updatedWish.getImageUrl());
         existingWish.setUrl(updatedWish.getUrl());
         existingWish.setPrice(updatedWish.getPrice());
-        existingWish.setPicked(updatedWish.getPicked());
+        existingWish.setPicked(updatedWish.isPicked());
 
         return wishRepository.save(existingWish);
     }

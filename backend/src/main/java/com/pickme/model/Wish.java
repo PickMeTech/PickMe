@@ -32,7 +32,7 @@ public class Wish {
     private Integer price;
 
     @Column(name = "is_picked", nullable = false)
-    private Boolean isPicked;
+    private Boolean picked;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -72,12 +72,12 @@ public class Wish {
         this.price = price;
     }
 
-    public Boolean getPicked() {
-        return isPicked;
+    public Boolean isPicked() {
+        return picked;
     }
 
     public void setPicked(Boolean picked) {
-        isPicked = picked;
+        this.picked = picked;
     }
 
     public String getImageUrl() {
