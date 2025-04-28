@@ -36,8 +36,15 @@ public class WishService {
     public Wish updateWish(Wish updatedWish, Long id) {
         Wish existingWish = wishRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
-        updatedWish.setId(id);
-        return wishRepository.save(updatedWish);
+
+        existingWish.setTitle(updatedWish.getTitle());
+        existingWish.setDescription(updatedWish.getDescription());
+        existingWish.setImageUrl(updatedWish.getImageUrl());
+        existingWish.setUrl(updatedWish.getUrl());
+        existingWish.setPrice(updatedWish.getPrice());
+        existingWish.setPicked(updatedWish.getPicked());
+
+        return wishRepository.save(existingWish);
     }
 
     @Transactional

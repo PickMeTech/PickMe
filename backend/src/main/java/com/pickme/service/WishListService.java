@@ -30,15 +30,15 @@ public class WishListService {
     @Transactional
     public WishList updateWishList(Long id, WishList updatedWishList) {
         WishList existingWishList = wishListRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + id));
-        updatedWishList.setId(id);
-        return wishListRepository.save(updatedWishList);
+                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id " + id));
+        existingWishList.setName(updatedWishList.getName());
+        return wishListRepository.save(existingWishList);
     }
 
     @Transactional
     public void deleteWishList(Long id) {
         WishList existingWishList = wishListRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id " + id));
         wishListRepository.delete(existingWishList);
     }
 }
