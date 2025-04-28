@@ -5,6 +5,7 @@ import com.pickme.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -36,14 +37,15 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + user.getId()));
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException("User not found with id: " + id);
-        }
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
+        userRepository.delete(existingUser);
     }
 }

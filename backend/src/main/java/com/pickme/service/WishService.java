@@ -5,9 +5,9 @@ import com.pickme.repository.WishRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WishService {
@@ -27,25 +27,23 @@ public class WishService {
         return wishRepository.findByWishListId(wishListId);
     }
 
-    public Optional<Wish> findByWishListIdAndId(Long wishListId, Long id) {
-        return wishRepository.findByWishListIdAndId(wishListId, id);
+    public Wish findByWishListIdAndId(Long wishListId, Long id) {
+        return wishRepository.findByWishListIdAndId(wishListId, id)
+                .orElseThrow(() -> new EntityNotFoundException("Wish not found with id "+ id));
     }
 
+    @Transactional
     public Wish updateWish(Wish updatedWish, Long id) {
-        Optional<Wish> wishExisting = wishRepository.findById(id);
-        if (wishExisting.isPresent()) {
-            updatedWish.setId(id);
-            return wishRepository.save(updatedWish);
-        } else {
-            throw new EntityNotFoundException("Wish not found with id " + id);
-        }
+        Wish existingWish = wishRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
+        updatedWish.setId(id);
+        return wishRepository.save(updatedWish);
     }
 
+    @Transactional
     public void deleteWish(Long id) {
-        if (wishRepository.existsById(id)) {
-            wishRepository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException("Wish not found with id " + id);
-        }
+        Wish existingWish = wishRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
+        wishRepository.delete(existingWish);
     }
 }
