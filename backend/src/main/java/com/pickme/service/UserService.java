@@ -1,0 +1,68 @@
+package com.pickme.service;
+
+import com.pickme.model.User;
+import com.pickme.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public User updateUser(User user) {
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + user.getId()));
+
+        existingUser.setUsername(user.getUsername());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setBio(user.getBio());
+        existingUser.setCity(user.getCity());
+        existingUser.setCountry(user.getCountry());
+        existingUser.setBirthDate(user.getBirthDate());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        existingUser.setInstagramUrl(user.getInstagramUrl());
+        existingUser.setTelegramUsername(user.getTelegramUsername());
+        existingUser.setFullName(user.getFullName());
+        existingUser.setPostService(user.getPostService());
+        existingUser.setPostCode(user.getPostCode());
+        existingUser.setStreetAddress(user.getStreetAddress());
+        existingUser.setProfileImageUrl(user.getProfileImageUrl());
+
+        return userRepository.save(existingUser);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
+        userRepository.delete(existingUser);
+    }
+}
