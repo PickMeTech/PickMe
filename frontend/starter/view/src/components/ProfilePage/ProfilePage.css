@@ -1,0 +1,184 @@
+.profile-page {
+  font-family: sans-serif;
+  padding: 1rem;
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+
+      span {
+        color: pink;
+      }
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 200px;
+      padding: 0.5rem;
+      border: 1px solid pink;
+      border-radius: 20px;
+      outline: none;
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(255, 192, 203, 0.4);
+      }
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  /* ─── Profile Card: picture + info ─── */
+  .profile-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .info {
+    flex: 1;
+
+    h2 {
+      margin: 0;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 300px;
+      height: 60px;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border: 1px solid lightgray;
+      border-radius: 10px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    /* ─── Social + Email Icons ─── */
+    .icons {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+
+      .icon-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+
+    /* ─── Delivery Address + Edit ─── */
+    .delivery-address {
+      margin-top: 1rem;
+
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      h3 {
+        margin: 0.25rem 0;
+      }
+
+      .edit-btn {
+        display: inline-block;
+        margin-top: 0.3rem;
+        padding: 0.3rem 1rem;
+        background: pink;
+        border: none;
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  /* ─── Pick List Section ─── */
+  .pick-list {
+    margin-top: 2rem;
+
+    .pick-search {
+      width: 100%;
+      max-width: 200px;
+      padding: 0.5rem;
+      border: 1px solid pink;
+      border-radius: 20px;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+
+    .pick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .pick-item {
+      position: relative;
+      padding: 1rem;
+      border-radius: 15px;
+      text-align: center;
+      background: #f9f9f9;
+
+      &.add {
+        background: #ffe6ec;
+
+        .plus {
+          font-size: 2rem;
+        }
+      }
+      &.picked {
+        background: #ffe6ec;
+      }
+      &.in-progress {
+        background: #fff5f5;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+      }
+
+      .status {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        background-color: pink;
+        color: white;
+      }
+    }
+  }
+}

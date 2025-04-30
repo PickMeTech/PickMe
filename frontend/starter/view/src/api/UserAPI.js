@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-import {delay} from "../../utils/delay";
+import {delay} from "../../../utils/delay";
 
 class UserApi {
     async login(email, password) {

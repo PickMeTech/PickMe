@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileHeader from "./ProfileHeader";
 import PickList from "./PickList";
-import "./ProfilePage.scss";
+import "./ProfilePage.css";
 
 const ProfilePage = () => {
     return (
