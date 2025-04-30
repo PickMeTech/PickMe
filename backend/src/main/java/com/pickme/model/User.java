@@ -63,11 +63,9 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Конструктор за замовчуванням
     public User() {
     }
 
-    // Конструктор для зручності створення користувача
     public User(String username, String password, String phoneNumber, String email, String country, LocalDate birthDate,
                 String profileImageUrl, String bio, String instagramUrl, String telegramUsername, String fullName,
                 String city, String streetAddress, String postCode, String postService) {
@@ -88,7 +86,6 @@ public class User {
         this.postService = postService;
     }
 
-    // Гетери і сетери
     public Long getId() {
         return id;
     }

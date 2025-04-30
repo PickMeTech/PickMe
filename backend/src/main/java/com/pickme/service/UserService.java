@@ -1,5 +1,6 @@
 package com.pickme.service;
 
+import com.pickme.dto.user.UserRegistrationRequest;
 import com.pickme.model.User;
 import com.pickme.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +22,19 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User createUser(UserRegistrationRequest dto) {
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
+        user.setEmail(dto.getEmail());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setCountry(dto.getCountry());
+        user.setFullName(dto.getName() + " " + dto.getSurname());
+
         return userRepository.save(user);
     }
 
