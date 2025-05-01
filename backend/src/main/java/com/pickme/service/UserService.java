@@ -33,7 +33,8 @@ public class UserService {
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setBirthDate(dto.getBirthDate());
         user.setCountry(dto.getCountry());
-        user.setFullName(dto.getName() + " " + dto.getSurname());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
 
         return userRepository.save(user);
     }
@@ -64,7 +65,8 @@ public class UserService {
         existingUser.setPhoneNumber(user.getPhoneNumber());
         existingUser.setInstagramUrl(user.getInstagramUrl());
         existingUser.setTelegramUsername(user.getTelegramUsername());
-        existingUser.setFullName(user.getFullName());
+        existingUser.setName(user.getName());
+        existingUser.setSurname(user.getSurname());
         existingUser.setPostService(user.getPostService());
         existingUser.setPostCode(user.getPostCode());
         existingUser.setStreetAddress(user.getStreetAddress());
