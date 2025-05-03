@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class UserRegistrationRequest {
 
     @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 30 characters")
 
     private String username;
 
@@ -31,6 +31,22 @@ public class UserRegistrationRequest {
     private LocalDate birthDate;
 
     private String country;
+
+    public UserRegistrationRequest() {
+    }
+
+    public UserRegistrationRequest(LocalDate birthDate, String country, String email,
+                                   String name, String password, String phoneNumber,
+                                   String surname, String username) {
+        this.birthDate = birthDate;
+        this.country = country;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.surname = surname;
+        this.username = username;
+    }
 
     public LocalDate getBirthDate() {
         return birthDate;
