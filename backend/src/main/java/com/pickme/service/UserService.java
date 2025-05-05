@@ -1,6 +1,7 @@
 package com.pickme.service;
 
 import com.pickme.dto.user.UserRegistrationRequest;
+import com.pickme.dto.user.UserUpdateRequest;
 import com.pickme.model.User;
 import com.pickme.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -73,6 +74,29 @@ public class UserService {
         existingUser.setProfileImageUrl(user.getProfileImageUrl());
 
         return userRepository.save(existingUser);
+    }
+
+    @Transactional
+    public User updateUserFromDto(long id, UserUpdateRequest dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setCountry(dto.getCountry());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setBirthDate(dto.getBirthDate());
+        user.setProfileImageUrl(dto.getProfileImageUrl());
+        user.setBio(dto.getBio());
+        user.setInstagramUrl(dto.getInstagramUrl());
+        user.setTelegramUsername(dto.getTelegramUsername());
+        user.setCity(dto.getCity());
+        user.setStreetAddress(dto.getStreetAddress());
+        user.setPostCode(dto.getPostCode());
+        user.setPostService(dto.getPostService());
+
+        return userRepository.save(user);
     }
 
     @Transactional
