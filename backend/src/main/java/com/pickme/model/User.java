@@ -42,8 +42,11 @@ public class User {
     @Column(name = "telegram_username", length = 100)
     private String telegramUsername;
 
-    @Column(name = "full_name", length = 100)
-    private String fullName;
+    @Column(length = 30, nullable = false)
+    private String name;
+
+    @Column(length = 30, nullable = false)
+    private String surname;
 
     @Column(length = 100)
     private String city;
@@ -63,13 +66,11 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Конструктор за замовчуванням
     public User() {
     }
 
-    // Конструктор для зручності створення користувача
     public User(String username, String password, String phoneNumber, String email, String country, LocalDate birthDate,
-                String profileImageUrl, String bio, String instagramUrl, String telegramUsername, String fullName,
+                String profileImageUrl, String bio, String instagramUrl, String telegramUsername, String name, String surname,
                 String city, String streetAddress, String postCode, String postService) {
         this.username = username;
         this.password = password;
@@ -78,17 +79,18 @@ public class User {
         this.country = country;
         this.birthDate = birthDate;
         this.profileImageUrl = profileImageUrl;
+        this.surname = surname;
+        this.name = name;
         this.bio = bio;
         this.instagramUrl = instagramUrl;
         this.telegramUsername = telegramUsername;
-        this.fullName = fullName;
+
         this.city = city;
         this.streetAddress = streetAddress;
         this.postCode = postCode;
         this.postService = postService;
     }
 
-    // Гетери і сетери
     public Long getId() {
         return id;
     }
@@ -177,12 +179,20 @@ public class User {
         this.telegramUsername = telegramUsername;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCity() {
