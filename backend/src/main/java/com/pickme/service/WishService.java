@@ -1,6 +1,10 @@
 package com.pickme.service;
 
+import com.pickme.dto.wish.WishCreateRequest;
+import com.pickme.dto.wish.WishUpdateRequest;
 import com.pickme.model.Wish;
+import com.pickme.model.WishList;
+import com.pickme.repository.WishListRepository;
 import com.pickme.repository.WishRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +17,30 @@ import java.util.List;
 public class WishService {
 
     private final WishRepository wishRepository;
+    private final WishListRepository wishListRepository;
 
     @Autowired
-    public WishService(WishRepository wishRepository) {
+    public WishService(WishRepository wishRepository, WishListRepository wishListRepository) {
         this.wishRepository = wishRepository;
+        this.wishListRepository = wishListRepository;
     }
 
-    public Wish createWish(Wish wish) {
+    public Wish createWish(Long wishListId, WishCreateRequest dto) {
+        WishList wishList = wishListRepository.findById(wishListId)
+                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + wishListId));
+        Wish wish = new Wish();
+        wish.setTitle(dto.getTitle());
+        wish.setDescription(dto.getDescription());
+        wish.setPrice(dto.getPrice());
+        wish.setImageUrl(dto.getImageUrl());
+        wish.setWishList(wishList);
+        wish.setPicked(dto.getPicked() != null ? dto.getPicked() : false);
         return wishRepository.save(wish);
     }
 
     public List<Wish> findByWishListId(Long wishListId) {
+        wishListRepository.findById(wishListId)
+                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + wishListId));
         return wishRepository.findByWishListId(wishListId);
     }
 
@@ -33,23 +50,22 @@ public class WishService {
     }
 
     @Transactional
-    public Wish updateWish(Wish updatedWish, Long id) {
-        Wish existingWish = wishRepository.findById(id)
+    public Wish updateWish(Long wishListId ,Long id, WishUpdateRequest dto) {
+        Wish existingWish = wishRepository.findByWishListIdAndId(wishListId, id)
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
-
-        existingWish.setTitle(updatedWish.getTitle());
-        existingWish.setDescription(updatedWish.getDescription());
-        existingWish.setImageUrl(updatedWish.getImageUrl());
-        existingWish.setUrl(updatedWish.getUrl());
-        existingWish.setPrice(updatedWish.getPrice());
-        existingWish.setPicked(updatedWish.isPicked());
+        existingWish.setTitle(dto.getTitle());
+        existingWish.setDescription(dto.getDescription());
+        existingWish.setPrice(dto.getPrice());
+        existingWish.setImageUrl(dto.getImageUrl());
+        existingWish.setUrl(dto.getUrl());
+        existingWish.setPicked(dto.getPicked() != null ? dto.getPicked() : false);
 
         return wishRepository.save(existingWish);
     }
 
     @Transactional
-    public void deleteWish(Long id) {
-        Wish existingWish = wishRepository.findById(id)
+    public void deleteWish(Long wishListId , Long id) {
+        Wish existingWish = wishRepository.findByWishListIdAndId(wishListId, id)
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
         wishRepository.delete(existingWish);
     }

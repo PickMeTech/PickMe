@@ -20,20 +20,27 @@ public class WishCreateRequest {
     @Size(max = 255)
     private String url;
 
-    @NotNull
-    private Long wishListId;
+    private Boolean picked;
 
     public WishCreateRequest() {
     }
 
     public WishCreateRequest(String title, String description, Integer price,
-                             String imageUrl, String url, Long wishListId) {
+                             String imageUrl, String url, Boolean picked) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
         this.url = url;
-        this.wishListId = wishListId;
+        this.picked = picked;
+    }
+
+    public Boolean getPicked() {
+        return picked;
+    }
+
+    public void setPicked( Boolean picked) {
+        this.picked = picked;
     }
 
     public String getDescription() {
@@ -74,13 +81,5 @@ public class WishCreateRequest {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Long getWishListId() {
-        return wishListId;
-    }
-
-    public void setWishListId(Long wishListId) {
-        this.wishListId = wishListId;
     }
 }
