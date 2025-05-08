@@ -1,23 +1,23 @@
 import React from "react";
+import plusIcon from "/src/assets/plus.png";
 
-const PickItem = ({ label, type, status }) => {
-    if (type === "add") {
-        return (
-            <div className="pick-item add">
-                <div className="plus">+ {/* тут буде картинка */}</div>
-                <p>add pick</p>
+const PickItemAdd = ({ onClick }) => (
+    <div className="pick-item-column" onClick={onClick}>
+        <div className="pick-item add">
+            <div className="add-text">
+                <img src={plusIcon} alt="Plus Icon" className="plus-icon" />
+                Add Pick
             </div>
-        );
-    }
-
-    return (
-        <div className={`pick-item ${status || ""}`}>
-            <div className="dropdown"> ^{/* тут буде картинка */}</div>
-            <p>{label}</p>
-            {status && <div className="status">{status === "picked" ? "Picked" : "In progress..."}</div>}
-            {/* тут буде картинка */}
         </div>
-    );
-};
+    </div>
+);
 
+const PickItem = ({ label, status }) => (
+    <div className="pick-item-column">
+        <div className={`pick-item ${status === "picked" ? "picked" : ""}`}>
+            {status === "picked" && <div className="status picked">Picked</div>}
+        </div>
+        <div className="pick-text">{label}</div>
+    </div>
+);
 export default PickItem;
