@@ -22,7 +22,8 @@ class UserApi {
             "phoneNumber": "+1-202-555-0173",
             "country": "United States",
             "birthDate": "1992-07-15",
-            "fullName": "Alexandra Pierce",
+            "name": "Alexandra",
+            "surname": "Smith",
             "city": "San Francisco"
         }
 

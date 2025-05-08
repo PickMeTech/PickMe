@@ -10,10 +10,19 @@ import Share from "../../assets/share-button.png";
 import Edit from "../../assets/edit-button1.png";
 
 const ProfileHeader = () => {
-    const [user, setUser] = useState({ email: "", city: "", country: "" });
+    const [user, setUser] = useState({
+        username: "",
+        email: "",
+        city: "",
+        country: "",
+        bio: "",
+        socials: [],
+    });
 
     useEffect(() => {
-        userApi.register({}).then((data) => setUser(data)).catch(console.error);
+        userApi.register()
+            .then(data => setUser(data))
+            .catch(console.error);
     }, []);
 
     return (
@@ -69,8 +78,7 @@ const ProfileSection = ({user}) => (
                 </div>
             </div>
             <span className="hint">about me</span>
-            <p className="bio">tell the world what you want to pick :)</p>
-            <div className="social-icons">
+            <p className="bio">{user.bio || "tell the world what you want to pick :)"}</p>            <div className="social-icons">
                 <button
                     className="social-button"
                     onClick={() => {
