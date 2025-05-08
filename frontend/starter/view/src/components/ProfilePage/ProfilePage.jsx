@@ -1,6 +1,6 @@
 import React from "react";
-import ProfileHeader from "./ProfileHeader";
-import PickList from "./PickList";
+import ProfileHeader from "./ProfileHeader.jsx";
+import PickList from "./PickList.jsx";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
