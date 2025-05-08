@@ -26,15 +26,12 @@ public class WishListService {
         this.userRepository = userRepository;
     }
 
-    public WishList createWishList(WishList wishList) {
-        return wishListRepository.save(wishList);
-    }
-
     public WishList createWishList(Long userId, WishListCreateRequest dto) {
         WishList wishList = new WishList();
         wishList.setName(dto.getName());
         User user = userRepository.findById(userId).
                 orElseThrow(() -> new EntityNotFoundException("User not found with id " + userId));
+        wishList.setUser(user);
         return wishListRepository.save(wishList);
     }
 

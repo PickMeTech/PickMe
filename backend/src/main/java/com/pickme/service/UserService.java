@@ -22,10 +22,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
     public User createUser(UserRegistrationRequest dto) {
         User user = new User();
         user.setUsername(dto.getUsername());
@@ -50,30 +46,6 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    @Transactional
-    public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + user.getId()));
-
-        existingUser.setUsername(user.getUsername());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setBio(user.getBio());
-        existingUser.setCity(user.getCity());
-        existingUser.setCountry(user.getCountry());
-        existingUser.setBirthDate(user.getBirthDate());
-        existingUser.setPhoneNumber(user.getPhoneNumber());
-        existingUser.setInstagramUrl(user.getInstagramUrl());
-        existingUser.setTelegramUsername(user.getTelegramUsername());
-        existingUser.setName(user.getName());
-        existingUser.setSurname(user.getSurname());
-        existingUser.setPostService(user.getPostService());
-        existingUser.setPostCode(user.getPostCode());
-        existingUser.setStreetAddress(user.getStreetAddress());
-        existingUser.setProfileImageUrl(user.getProfileImageUrl());
-
-        return userRepository.save(existingUser);
     }
 
     @Transactional
