@@ -31,21 +31,21 @@ public class UserController {
         User createdUser = userService.createUser(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userMapper.toUserProfileResponse(createdUser));
+                .body(userMapper.mapToProfileResponse(createdUser));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long id)  {
         User user = userService.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return ResponseEntity.ok(userMapper.toUserProfileResponse(user));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable Long id,
                                                           @Valid @RequestBody UserUpdateRequest dto) {
         User updatedUser = userService.updateUserFromDto(id, dto);
-        return ResponseEntity.ok(userMapper.toUserProfileResponse(updatedUser));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(updatedUser));
     }
 
     @DeleteMapping("/{id}")

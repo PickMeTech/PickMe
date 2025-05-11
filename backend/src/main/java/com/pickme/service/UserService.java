@@ -2,6 +2,7 @@ package com.pickme.service;
 
 import com.pickme.dto.user.UserRegistrationRequest;
 import com.pickme.dto.user.UserUpdateRequest;
+import com.pickme.mapper.UserMapper;
 import com.pickme.model.User;
 import com.pickme.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,23 +17,16 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     public User createUser(UserRegistrationRequest dto) {
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
-        user.setEmail(dto.getEmail());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setBirthDate(dto.getBirthDate());
-        user.setCountry(dto.getCountry());
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-
+        User user = userMapper.mapFromRegistrationRequest(dto);
         return userRepository.save(user);
     }
 
@@ -52,22 +46,7 @@ public class UserService {
     public User updateUserFromDto(long id, UserUpdateRequest dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setCountry(dto.getCountry());
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setBirthDate(dto.getBirthDate());
-        user.setProfileImageUrl(dto.getProfileImageUrl());
-        user.setBio(dto.getBio());
-        user.setInstagramUrl(dto.getInstagramUrl());
-        user.setTelegramUsername(dto.getTelegramUsername());
-        user.setCity(dto.getCity());
-        user.setStreetAddress(dto.getStreetAddress());
-        user.setPostCode(dto.getPostCode());
-        user.setPostService(dto.getPostService());
-
+        userMapper.mapFromUpdateRequest(user, dto);
         return userRepository.save(user);
     }
 
