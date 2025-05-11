@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users/{userId}/wishlists")
-public class WishListController {
+public class
+WishListController {
 
     private final WishListService wishListService;
     private final WishListMapper wishListMapper;

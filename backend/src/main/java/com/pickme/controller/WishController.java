@@ -31,7 +31,7 @@ public class WishController {
             @PathVariable Long wishListsId,
             @Valid @RequestBody WishCreateRequest request) {
         Wish created = wishService.createWish(wishListsId, request);
-        WishResponse response = wishMapper.toWishResponse(created);
+        WishResponse response = wishMapper.mapToWishResponse(created);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -42,7 +42,7 @@ public class WishController {
         List<WishResponse> dtos = wishService
                 .findByWishListId(wishListsId)
                 .stream()
-                .map(wishMapper::toWishResponse)
+                .map(wishMapper::mapToWishResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -50,7 +50,7 @@ public class WishController {
     @GetMapping("/{id}")
     public ResponseEntity<WishResponse> getWish(@PathVariable Long wishListsId, @PathVariable Long id) {
         Wish wish = wishService.findByWishListIdAndId(wishListsId, id);
-        WishResponse response = wishMapper.toWishResponse(wish);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
         return ResponseEntity.ok(response);
     }
 
@@ -60,7 +60,7 @@ public class WishController {
             @PathVariable Long id,
             @Valid @RequestBody WishUpdateRequest request) {
         Wish wish = wishService.updateWish(wishListsId, id, request);
-        WishResponse response = wishMapper.toWishResponse(wish);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
         return ResponseEntity.ok(response);
     }
 

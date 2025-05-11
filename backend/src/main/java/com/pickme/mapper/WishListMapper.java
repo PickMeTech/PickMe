@@ -20,7 +20,7 @@ public class WishListMapper {
     public WishListResponse toWishListResponse(WishList wishList) {
 
         List<WishResponse> wishes = wishList.getWishes().stream()
-                .map(wishMapper::toWishResponse)
+                .map(wishMapper::mapToWishResponse)
                 .collect(Collectors.toList());
 
         WishListResponse response = new WishListResponse();
