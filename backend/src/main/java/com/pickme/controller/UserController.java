@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,6 +40,14 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long id)  {
         User user = userService.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getCurrentUserProfile(
+            @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+        User user = userService.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
     }
 

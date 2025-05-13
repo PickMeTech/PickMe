@@ -4,10 +4,17 @@ import com.pickme.dto.user.UserProfileResponse;
 import com.pickme.dto.user.UserRegistrationRequest;
 import com.pickme.dto.user.UserUpdateRequest;
 import com.pickme.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserMapper(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UserProfileResponse mapToProfileResponse(User user) {
         UserProfileResponse response = new UserProfileResponse();
@@ -33,7 +40,7 @@ public class UserMapper {
     public User mapFromRegistrationRequest(UserRegistrationRequest dto){
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEmail(dto.getEmail());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setBirthDate(dto.getBirthDate());
