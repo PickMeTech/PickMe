@@ -32,29 +32,71 @@ const ProfileHeader = () => {
         </div>
     );
 };
+
+
 const Header = () => {
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const dropdownRef = React.useRef(null);
+    const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+        const onClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", onClickOutside);
+        return () => document.removeEventListener("mousedown", onClickOutside);
+    }, []);
+
     return (
         <div className="header">
             <img src={Logo} className="logo" alt="Logo"/>
             <div className="search-field">
-                <div className="search-text">Search</div>
-                <img src={Search} className="search-icon" alt="Search"/>
+                <div className="search-text">
+                    <input
+                        type="text"
+                        className="search-input"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <img src={Search} className="search-icon" alt="Search"/>
+                </div>
             </div>
-            <nav className="navigation">
-                <ul>
-                    <li>
-                        <NavLink to="/profile" className="nav-link">
-                            Profile
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/register" className="nav-link">
-                            Register
-                        </NavLink>
-                    </li>
-                </ul>
-            </nav>
-            <img src={Profile} className="user-avatar" alt="User"/>
+            <div className="dropdown" ref={dropdownRef}>
+                <a
+                    href="#/"
+                    className="d-flex align-items-center text-decoration-none dropdown-toggle"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setMenuOpen(!menuOpen);
+                    }}
+                >
+                    <img
+                        src={Profile}
+                        alt="User"
+                        width="40"
+                        height="40"
+                        className="rounded-circle"
+                    />
+                </a>
+                {menuOpen && (
+                    <ul className="dropdown-menu dropdown-menu-end shadow show">
+                        <li>
+                            <NavLink to="/" className="dropdown-item">
+                                Profile
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/register" className="dropdown-item">
+                                Register
+                            </NavLink>
+                        </li>
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };
@@ -78,7 +120,8 @@ const ProfileSection = ({user}) => (
                 </div>
             </div>
             <span className="hint">about me</span>
-            <p className="bio">{user.bio || "tell the world what you want to pick :)"}</p>            <div className="social-icons">
+            <p className="bio">{user.bio || "tell the world what you want to pick :)"}</p>
+            <div className="social-icons">
                 <button
                     className="social-button"
                     onClick={() => {
@@ -108,3 +151,4 @@ const ProfileSection = ({user}) => (
 );
 
 export default ProfileHeader;
+export { Header };

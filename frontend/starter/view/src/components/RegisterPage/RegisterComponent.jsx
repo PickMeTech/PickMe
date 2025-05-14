@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { userApi } from "@/api/UserAPI";
+import { Header} from "@/components/ProfilePage/ProfileHeader";
 
 const RegisterComponent = () => {
     const [user, setUser] = useState({
@@ -17,6 +18,11 @@ const RegisterComponent = () => {
             .then(data => setUser(data))
             .catch(console.error);
     }, []);
+
+    function handleRegistrationForm(e){
+        e.preventDefault()
+        const register = {username, phoneNumber, email, password, name, surname, birthDate, country}
+    }
 
     const nextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -94,7 +100,7 @@ const RegisterComponent = () => {
                                 <div className="row mb-3">
                                     <label htmlFor="surname" className="col-md-3 control-label">Surname</label>
                                     <div className="col-md-9">
-                                        <input type="text" name="surname" className="form-control" id="country" placeholder="enter surname" value={user.surname} onChange={(e) => setUser({ ...user, surname: e.target.value })} />
+                                        <input type="text" name="surname" className="form-control" id="surname" placeholder="enter surname" value={user.surname} onChange={(e) => setUser({ ...user, surname: e.target.value })} />
                                     </div>
                                 </div>
 
@@ -118,7 +124,7 @@ const RegisterComponent = () => {
                                     <button type="button" className="btn btn-secondary" onClick={prevStep}>
                                         Back
                                     </button>
-                                    <button type="button" className="btn btn-success" >
+                                    <button type="button" className="btn btn-success" onClick={ (e) => handleRegistrationForm(e)}>
                                         Complete Registration
                                     </button>
                                 </div>
@@ -132,16 +138,18 @@ const RegisterComponent = () => {
     };
 
     return (
-        <div className="container">
-            <br/> <br/>
-            <div className="row justify-content-end">
-                <div className="col-md-5">
-                    <div className="card">
-                        {renderStep()}
+        <>
+            <Header />
+            <div className="container">
+                <div className="row justify-content-end mt-5">
+                    <div className="col-md-5">
+                        <div className="card">
+                            {renderStep()}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
