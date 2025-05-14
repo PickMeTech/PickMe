@@ -1,68 +1,57 @@
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-import {delay} from "../../../utils/delay";
+const baseUrl = import.meta.env.VITE_API_BASE_URL
+    || "http://localhost:8080/api";
 
-class UserApi {
-    async login(email, password) {
-        const response = await fetch(`${baseUrl}/auth/login`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-        if (!response.ok) throw new Error('Bad credentials');
-        return response.json();
-    }
-
+export class UserApi {
+    // async login(email, password) {
+    //     const res = await fetch(`${baseUrl}/auth/login`, {
+    //         method: "POST",
+    //         credentials: "include",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({ email, password }),
+    //     });
+    //     if (!res.ok) throw new Error("Login failed");
+    //     return res.json();
+    // }
     async register(userData) {
+        const {
+            username,
+            email,
+            password,
+            phoneNumber,
+            country,
+            birthDate,
+            name,
+            surname,
+            city,
+        } = userData;
 
-        userData = {
-            "username": "coolcat92",
-            "email": "coolcat92@example.com",
-            "password": "P@ssw0rd123!",
-            "phoneNumber": "+1-202-555-0173",
-            "country": "United States",
-            "birthDate": "1992-07-15",
-            "name": "Alexandra",
-            "surname": "Smith",
-            "city": "San Francisco"
+        const response = await fetch(`${baseUrl}/users/register`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+                phoneNumber,
+                country,
+                birthDate,
+                name,
+                surname,
+                city,
+            }),
+        });
+
+        if (!response.ok) {
+            let message = `Registration failed (${response.status})`;
+            try {
+                const error = await response.json();
+                message = error.message || message;
+            } catch {}
+            throw new Error(message);
         }
 
-        await delay(500)
-
-        return userData
-        //
-        // const {
-        //     username,
-        //     email,
-        //     password,
-        //     phoneNumber,
-        //     country,
-        //     birthDate,
-        //     fullName,
-        //     city,
-        // } = userData;
-        //
-        // const response = await fetch(`${baseUrl}/users`, {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         username,
-        //         email,
-        //         password,
-        //         phoneNumber,
-        //         country,
-        //         birthDate,
-        //         fullName,
-        //         city,
-        //     }),
-        // });
-        // if (!response.ok) throw new Error('Registration failed');
-        // return response.json();
-
-
-
+        return response.json();
     }
 }
-
 export const userApi = new UserApi();

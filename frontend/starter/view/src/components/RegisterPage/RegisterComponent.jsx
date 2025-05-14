@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { userApi } from "@/api/UserAPI";
-import { Header} from "@/components/ProfilePage/ProfileHeader";
+import { Header } from "@/components/ProfilePage/ProfileHeader";
 
 const RegisterComponent = () => {
-    const [user, setUser] = useState({
+    const [formData, setFormData] = useState({
         username: "",
+        phoneNumber: "",
         email: "",
-        city: "",
+        password: "",
+        name: "",
+        surname: "",
+        birthDate: "",
         country: "",
-        bio: "",
-        socials: [],
     });
     const [currentStep, setCurrentStep] = useState(1);
 
-    useEffect(() => {
-        userApi.register()
-            .then(data => setUser(data))
-            .catch(console.error);
-    }, []);
-
-    function handleRegistrationForm(e){
-        e.preventDefault()
-        const register = {username, phoneNumber, email, password, name, surname, birthDate, country}
-    }
-
-    const nextStep = () => {
-        setCurrentStep(currentStep + 1);
+    const handleRegistrationForm = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await userApi.register(formData);
+            console.log("Registration successful:", response);
+            // TODO: navigate to profile or show a success message
+        } catch (error) {
+            console.error("Registration error:", error);
+        }
     };
 
-    const prevStep = () => {
-        setCurrentStep(currentStep - 1);
-    };
+    const nextStep = () => setCurrentStep((prev) => prev + 1);
+    const prevStep = () => setCurrentStep((prev) => prev - 1);
 
     const renderStep = () => {
         switch (currentStep) {
@@ -43,38 +40,80 @@ const RegisterComponent = () => {
                         <div className="card-body">
                             <form>
                                 <div className="row mb-3">
-                                    <label htmlFor="username" className="col-md-3 control-label">Username</label>
+                                    <label htmlFor="username" className="col-md-3 control-label">
+                                        Username
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="text" name="username" className="form-control" id="username" placeholder="enter username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })} />
+                                        <input
+                                            type="text"
+                                            id="username"
+                                            className="form-control"
+                                            placeholder="enter username"
+                                            value={formData.username}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, username: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="row mb-3">
-                                    <label htmlFor="phoneNumber" className="col-md-3 control-label">Phone number</label>
+                                    <label htmlFor="phoneNumber" className="col-md-3 control-label">
+                                        Phone number
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="tel" name="phoneNumber" className="form-control" id="phoneNumber" placeholder="enter phone number" value={user.phoneNumber} onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })} />
+                                        <input
+                                            type="tel"
+                                            id="phoneNumber"
+                                            className="form-control"
+                                            placeholder="enter phone number"
+                                            value={formData.phoneNumber}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, phoneNumber: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="row mb-3">
-                                    <label htmlFor="email" className="col-md-3 control-label">Email</label>
+                                    <label htmlFor="email" className="col-md-3 control-label">
+                                        Email
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="email" name="email" className="form-control" id="email"
-                                               placeholder="enter email" value={user.email}
-                                               onChange={(e) => setUser({...user, email: e.target.value})}/>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            className="form-control"
+                                            placeholder="enter email"
+                                            value={formData.email}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, email: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="row mb-3">
-                                    <label htmlFor="password" className="col-md-3 control-label">Password</label>
+                                    <label htmlFor="password" className="col-md-3 control-label">
+                                        Password
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="password" name="password" className="form-control" id="password" placeholder="enter password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} />
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            className="form-control"
+                                            placeholder="enter password"
+                                            value={formData.password}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, password: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="d-grid gap-2 mt-3">
-                                    <button type="button" className="btn btn-primary"        style={{backgroundColor: "#F25081", color: "white", border: "none"}}
-                                            onClick={nextStep}>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        style={{ backgroundColor: "#F25081", color: "white", border: "none" }}
+                                        onClick={nextStep}
+                                    >
                                         Continue
                                     </button>
                                 </div>
@@ -89,42 +128,79 @@ const RegisterComponent = () => {
                             <h3 className="text-center">Sign Up - Step 2</h3>
                         </div>
                         <div className="card-body">
-                            <form>
+                            <form onSubmit={handleRegistrationForm}>
                                 <div className="row mb-3">
-                                    <label htmlFor="name" className="col-md-3 control-label">Name</label>
+                                    <label htmlFor="name" className="col-md-3 control-label">
+                                        Name
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="text" name="name" className="form-control" id="name" placeholder="enter name" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            className="form-control"
+                                            placeholder="enter name"
+                                            value={formData.name}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, name: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="row mb-3">
-                                    <label htmlFor="surname" className="col-md-3 control-label">Surname</label>
+                                    <label htmlFor="surname" className="col-md-3 control-label">
+                                        Surname
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="text" name="surname" className="form-control" id="surname" placeholder="enter surname" value={user.surname} onChange={(e) => setUser({ ...user, surname: e.target.value })} />
+                                        <input
+                                            type="text"
+                                            id="surname"
+                                            className="form-control"
+                                            placeholder="enter surname"
+                                            value={formData.surname}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, surname: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
                                 <div className="row mb-3">
-                                    <label htmlFor="birthDate" className="col-md-3 control-label">Birth Date</label>
+                                    <label htmlFor="birthDate" className="col-md-3 control-label">
+                                        Birth Date
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="date" name="birthDate" className="form-control" id="birthDate" value={user.birthDate} onChange={(e) => setUser({ ...user, birthDate: e.target.value })} />
+                                        <input
+                                            type="date"
+                                            id="birthDate"
+                                            className="form-control"
+                                            value={formData.birthDate}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, birthDate: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
-
                                 <div className="row mb-3">
-                                    <label htmlFor="country" className="col-md-3 control-label">Country</label>
+                                    <label htmlFor="country" className="col-md-3 control-label">
+                                        Country
+                                    </label>
                                     <div className="col-md-9">
-                                        <input type="text" name="country" className="form-control" id="country" placeholder="enter country" value={user.country} onChange={(e) => setUser({ ...user, country: e.target.value })} />
+                                        <input
+                                            type="text"
+                                            id="country"
+                                            className="form-control"
+                                            placeholder="enter country"
+                                            value={formData.country}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, country: e.target.value })
+                                            }
+                                        />
                                     </div>
                                 </div>
-
-
                                 <div className="d-flex justify-content-between mt-3">
                                     <button type="button" className="btn btn-secondary" onClick={prevStep}>
                                         Back
                                     </button>
-                                    <button type="button" className="btn btn-success" onClick={ (e) => handleRegistrationForm(e)}>
+                                    <button type="submit" className="btn btn-success">
                                         Complete Registration
                                     </button>
                                 </div>
@@ -143,9 +219,7 @@ const RegisterComponent = () => {
             <div className="container">
                 <div className="row justify-content-end mt-5">
                     <div className="col-md-5">
-                        <div className="card">
-                            {renderStep()}
-                        </div>
+                        <div className="card">{renderStep()}</div>
                     </div>
                 </div>
             </div>

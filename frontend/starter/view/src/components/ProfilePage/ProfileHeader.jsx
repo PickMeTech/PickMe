@@ -37,8 +37,8 @@ const ProfileHeader = () => {
 const Header = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
-    const dropdownRef = React.useRef(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const dropdownRef = React.useRef(null);
 
     useEffect(() => {
         const onClickOutside = (e) => {
@@ -67,7 +67,7 @@ const Header = () => {
             </div>
             <div className="dropdown" ref={dropdownRef}>
                 <a
-                    href="#/"
+                    href="#"
                     className="d-flex align-items-center text-decoration-none dropdown-toggle"
                     onClick={(e) => {
                         e.preventDefault();
