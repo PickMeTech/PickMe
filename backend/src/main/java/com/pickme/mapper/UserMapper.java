@@ -1,12 +1,22 @@
 package com.pickme.mapper;
 
 import com.pickme.dto.user.UserProfileResponse;
+import com.pickme.dto.user.UserRegistrationRequest;
+import com.pickme.dto.user.UserUpdateRequest;
 import com.pickme.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public UserProfileResponse toUserProfileResponse(User user) {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserMapper(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserProfileResponse mapToProfileResponse(User user) {
         UserProfileResponse response = new UserProfileResponse();
         response.setId(user.getId());
         response.setUsername(user.getUsername());
@@ -25,5 +35,36 @@ public class UserMapper {
         response.setPostCode(user.getPostCode());
         response.setPostService(user.getPostService());
         return response;
+    }
+
+    public User mapFromRegistrationRequest(UserRegistrationRequest dto){
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setEmail(dto.getEmail());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setCountry(dto.getCountry());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        return user;
+    }
+
+    public void mapFromUpdateRequest(User user, UserUpdateRequest dto){
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setCountry(dto.getCountry());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setBirthDate(dto.getBirthDate());
+        user.setProfileImageUrl(dto.getProfileImageUrl());
+        user.setBio(dto.getBio());
+        user.setInstagramUrl(dto.getInstagramUrl());
+        user.setTelegramUsername(dto.getTelegramUsername());
+        user.setCity(dto.getCity());
+        user.setStreetAddress(dto.getStreetAddress());
+        user.setPostCode(dto.getPostCode());
+        user.setPostService(dto.getPostService());
     }
 }

@@ -16,7 +16,7 @@ public class Wish {
     @JoinColumn(name = "wish_list_id", nullable = false)
     private WishList wishList;
 
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @Column(length = 255)
@@ -31,7 +31,7 @@ public class Wish {
     @Column(name = "price")
     private Integer price;
 
-    @Column(name = "is_picked", nullable = false)
+    @Column(name="is_picked", nullable=false, columnDefinition="boolean default false")
     private Boolean picked;
 
     @Column(name = "created_at", nullable = false)

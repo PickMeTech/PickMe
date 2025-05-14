@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,21 +33,29 @@ public class UserController {
         User createdUser = userService.createUser(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userMapper.toUserProfileResponse(createdUser));
+                .body(userMapper.mapToProfileResponse(createdUser));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long id)  {
         User user = userService.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return ResponseEntity.ok(userMapper.toUserProfileResponse(user));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getCurrentUserProfile(
+            @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+        User user = userService.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable Long id,
                                                           @Valid @RequestBody UserUpdateRequest dto) {
         User updatedUser = userService.updateUserFromDto(id, dto);
-        return ResponseEntity.ok(userMapper.toUserProfileResponse(updatedUser));
+        return ResponseEntity.ok(userMapper.mapToProfileResponse(updatedUser));
     }
 
     @DeleteMapping("/{id}")

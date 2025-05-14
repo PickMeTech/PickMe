@@ -1,7 +1,6 @@
 package com.pickme.dto.wishList;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class WishListCreateRequest {
@@ -10,15 +9,11 @@ public class WishListCreateRequest {
     @Size(max = 100)
     private String name;
 
-    @NotNull
-    private Long userId;
-
     public WishListCreateRequest() {
     }
 
-    public WishListCreateRequest(String name, Long userId) {
+    public WishListCreateRequest(String name) {
         this.name = name;
-        this.userId = userId;
     }
 
     public String getName() {
@@ -27,13 +22,5 @@ public class WishListCreateRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }
