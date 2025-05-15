@@ -60,4 +60,21 @@ public class WishService {
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id " + id));
         wishRepository.delete(existingWish);
     }
+
+    public Wish getOldestWish(Long wishListId) {
+        List<Wish> wishes = wishRepository.findOldestWishesByWishListId(wishListId);
+        if (wishes.isEmpty()) {
+            throw new EntityNotFoundException("Wish not found with id " + wishListId);
+        }
+        return wishes.get(0);
+    }
+
+    public Wish getNewestWish(Long wishListId) {
+        List<Wish> wishes = wishRepository.findNewestWishesByWishListId(wishListId);
+        if (wishes.isEmpty()) {
+            throw new EntityNotFoundException("Wish not found with id " + wishListId);
+        }
+        return wishes.get(0);
+    }
+
 }

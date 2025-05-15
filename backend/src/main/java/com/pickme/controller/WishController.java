@@ -54,6 +54,20 @@ public class WishController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/peek-oldest")
+    public ResponseEntity<WishResponse> getOldestWishes(@PathVariable Long wishListId) {
+        Wish wish = wishService.getOldestWish(wishListId);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/peek-newest")
+    public ResponseEntity<WishResponse> getNewestWishes(@PathVariable Long wishListId) {
+        Wish wish = wishService.getNewestWish(wishListId);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<WishResponse> updateWish(
             @PathVariable Long wishListId,
