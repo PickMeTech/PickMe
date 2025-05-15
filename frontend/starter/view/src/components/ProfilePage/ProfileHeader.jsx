@@ -94,6 +94,11 @@ const Header = () => {
                                 Register
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/login" className="dropdown-item">
+                                Login
+                            </NavLink>
+                        </li>
                     </ul>
                 )}
             </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
 import { Header } from "@/components/ProfilePage/ProfileHeader";
 
@@ -14,18 +15,21 @@ const RegisterComponent = () => {
         country: "",
     });
     const [currentStep, setCurrentStep] = useState(1);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleRegistrationForm = async (e) => {
         e.preventDefault();
+        setError(null);
         try {
             const response = await userApi.register(formData);
             console.log("Registration successful:", response);
-            // TODO: navigate to profile or show a success message
+            navigate("/profile");
         } catch (error) {
             console.error("Registration error:", error);
+            setError(error.message || "Registration failed");
         }
     };
-
     const nextStep = () => setCurrentStep((prev) => prev + 1);
     const prevStep = () => setCurrentStep((prev) => prev - 1);
 
