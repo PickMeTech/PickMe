@@ -2,6 +2,7 @@ package com.pickme.config;
 
 import com.pickme.repository.UserRepository;
 import com.pickme.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,25 +20,34 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${security.enabled}")
+    private boolean securityEnabled;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorize)-> authorize
-                        .requestMatchers( "/api/users/register", "/login", "/css/**", "/js/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/api/users/me", true)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                )
-                .csrf(AbstractHttpConfigurer::disable);
-
+        if (securityEnabled) {
+            http
+                    .authorizeHttpRequests((authorize) -> authorize
+                            .requestMatchers(
+                                    "/api/users/register",
+                                    "/login",
+                                    "/css/**",
+                                    "/js/**"
+                            ).permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin(form -> form
+                            .defaultSuccessUrl("/api/users/me", true)
+                            .permitAll()
+                    )
+                    .logout(logout -> logout
+                            .logoutUrl("/logout")
+                            .logoutSuccessUrl("/")
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID")
+                    )
+                    .csrf(AbstractHttpConfigurer::disable);
+        }
         return http.build();
     }
 
