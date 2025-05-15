@@ -1,7 +1,6 @@
 import React from "react";
 import Search from "/src/assets/search.png";
-import PickItem from "./PickItem";
-import PickItemAdd from "./PickItem";
+import WishItem from "./WishItem";
 
 const picks = [
     { id: 1, type: "add", label: "add pick" },
@@ -14,7 +13,7 @@ const picks = [
     { id: 8, label: "Так ніхто не кохав Ан...", status: "picked" },
 ];
 
-const PickList = () => {
+const WishList = () => {
     const groupedPicks = {
         active: picks.filter(pick => !pick.status || pick.type === "add"),
         picked: picks.filter(pick => pick.status === "picked")
@@ -31,13 +30,13 @@ const PickList = () => {
 
                 <div className="wishes-grid">
                     {groupedPicks.active.map(pick => (
-                        <PickItem key={pick.id} {...pick} />
+                        <WishItem key={pick.id} {...pick} />
                     ))}
                 </div>
 
                 <div className="wishes-grid">
                     {groupedPicks.picked.map(pick => (
-                        <PickItem key={pick.id} {...pick} />
+                        <WishItem key={pick.id} {...pick} />
                     ))}
                 </div>
             </div>
@@ -45,4 +44,4 @@ const PickList = () => {
     );
 };
 
-export default PickList;
+export default WishList;
