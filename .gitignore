@@ -56,8 +56,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# Files with secrets
-backend/.env
-backend/src/main/resources/application.properties
-
