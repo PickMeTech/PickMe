@@ -1,10 +1,8 @@
 const API_BASE  = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
-const AUTH_BASE = API_BASE;
-const REST_BASE = `${API_BASE}/api`;
 
 export class UserApi {
     async login(emailOrUsername, password) {
-        const res = await fetch(`${AUTH_BASE}/login`, {
+        const res = await fetch(`{$API_BASE}/login`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -15,14 +13,14 @@ export class UserApi {
     }
 
     async logout() {
-        await fetch(`${AUTH_BASE}/logout`, {
+        await fetch(`${API_BASE}/logout`, {
             method: "POST",
             credentials: "include"
         });
     }
 
     async me() {
-        const res = await fetch(`${REST_BASE}/users/me`, {
+        const res = await fetch(`${API_BASE}/api/users/me`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Not authenticated");
@@ -36,7 +34,7 @@ export class UserApi {
             birthDate, name, surname
         } = userData;
 
-        const res = await fetch(`${REST_BASE}/users/register`, {
+        const res = await fetch(`${API_BASE}/api/users/register`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
