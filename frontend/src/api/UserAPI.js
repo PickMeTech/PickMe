@@ -1,12 +1,12 @@
-const API_BASE  = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export class UserApi {
     async login(emailOrUsername, password) {
-        const res = await fetch(`{$API_BASE}/login`, {
+        const res = await fetch(`${API_BASE}/login`, {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ username: emailOrUsername, password })
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: emailOrUsername, password})
         });
         if (!res.ok) throw new Error("Login failed");
         return res.json();
@@ -37,7 +37,7 @@ export class UserApi {
         const res = await fetch(`${API_BASE}/api/users/register`, {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 username, email, password,
                 phoneNumber, country,
@@ -46,7 +46,10 @@ export class UserApi {
         });
         if (!res.ok) {
             let msg = `Registration failed (${res.status})`;
-            try { msg = (await res.json()).message || msg; } catch {}
+            try {
+                msg = (await res.json()).message || msg;
+            } catch {
+            }
             throw new Error(msg);
         }
         return res.json();
