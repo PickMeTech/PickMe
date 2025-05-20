@@ -17,9 +17,16 @@ public class CachingAuthProxy {
         CachedResponse cached = cache.get(url);
         long now = System.currentTimeMillis();
 
-        if(cached != null && (now - cached.timestamp()) < TTL){
-            System.out.println("From the cache: " + url);
-            return cached.response;
+        if(cached != null) {
+            long age = now - cached.timestamp();
+            if (age < TTL) {
+                System.out.println("[Cache]: Used cached response for url: " + url);
+                return cached.response();
+            } else {
+                System.out.println("[Cache]: Expired. Fetching fresh data: " + url);
+            }
+        } else {
+            System.out.println("[Cache]: No cache. Fetching data: " + url);
         }
 
         String response = restTemplate.getForObject(url, String.class);
