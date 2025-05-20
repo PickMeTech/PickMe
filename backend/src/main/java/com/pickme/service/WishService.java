@@ -77,4 +77,10 @@ public class WishService {
         return wishes.get(0);
     }
 
+    public Wish createWishFromBook(Long wishListId, Wish wish) {
+        WishList wishList = wishListRepository.findById(wishListId)
+                .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + wishListId));
+        wish.setWishList(wishList);
+        return wishRepository.save(wish);
+    }
 }

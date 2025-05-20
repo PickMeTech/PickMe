@@ -1,5 +1,6 @@
 package com.pickme.controller;
 
+import com.pickme.dto.wish.BookWishRequest;
 import com.pickme.dto.wish.WishCreateRequest;
 import com.pickme.dto.wish.WishResponse;
 import com.pickme.dto.wish.WishUpdateRequest;
@@ -84,5 +85,15 @@ public class WishController {
             @PathVariable Long id) {
         wishService.deleteWish(wishListId, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/from-book")
+    public ResponseEntity<WishResponse> addWishFromBook(
+            @PathVariable Long wishListId,
+            @RequestBody BookWishRequest request) {
+        Wish wish = wishMapper.mapFromBookRequest(request);
+        Wish created = wishService.createWishFromBook(wishListId, wish);
+        WishResponse response = wishMapper.mapToWishResponse(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
