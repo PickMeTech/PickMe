@@ -12,4 +12,5 @@ import java.lang.annotation.Target;
 public @interface Loggable {
     LogLevel level() default LogLevel.INFO;
     boolean logOnException() default true;
+    boolean logResult() default true;
 }

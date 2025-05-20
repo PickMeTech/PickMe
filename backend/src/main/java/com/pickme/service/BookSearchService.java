@@ -1,13 +1,15 @@
 package com.pickme.service;
 
 import com.pickme.dto.book.BookDTO;
+import com.pickme.logging.Loggable;
+import com.pickme.proxy.CachingAuthProxy;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -17,18 +19,24 @@ import java.util.List;
 @Service
 public class BookSearchService {
 
+    private final CachingAuthProxy proxy;
+
+    public BookSearchService(CachingAuthProxy proxy) {
+        this.proxy = proxy;
+    }
+
     private static final Logger log = LoggerFactory.getLogger(BookSearchService.class);
 
     @Value("${google.books.api.key}")
     private String apiKey;
 
+    @Loggable(level = LogLevel.INFO)
     public List<BookDTO> searchBooks(String query){
         try {
             String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
             String url = "https://www.googleapis.com/books/v1/volumes?q=" + encodedQuery + "&key=" + apiKey;
 
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(url, String.class);
+            String response = proxy.get(url);
 
             JSONObject json = new JSONObject(response);
             JSONArray items = json.optJSONArray("items");

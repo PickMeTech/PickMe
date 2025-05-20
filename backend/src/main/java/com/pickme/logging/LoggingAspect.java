@@ -9,6 +9,7 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Aspect
 @Component
@@ -26,9 +27,19 @@ public class LoggingAspect {
             Object result = joinPoint.proceed();
             long endTime = System.currentTimeMillis() - startTime;
 
-            if(loggable.level() != LogLevel.ERROR) {
-                log(loggable.level(), "Method: {}, Args: {}, Result: {}, Duration: {}ms",
-                        methodName, Arrays.toString(args), result, endTime);
+            if (loggable.level() != LogLevel.ERROR) {
+                if (loggable.logResult()){
+                    String resultStr = (result instanceof List list && list.size() > 3)
+                            ? list.subList(0,3) + "...(total: " + list.size() + ")"
+                            : String.valueOf(result);
+                    log(loggable.level(),
+                            "Method: {}, Args: {}, Result: {}, Time: {}ms",
+                            methodName, Arrays.toString(args), resultStr, endTime);
+                } else {
+                    log(loggable.level(),
+                            "Method: {}, Args: {},  Time: {}ms",
+                            methodName, Arrays.toString(args), endTime);
+                }
             }
             return result;
         } catch (Throwable e) {
