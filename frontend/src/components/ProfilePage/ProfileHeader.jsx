@@ -20,7 +20,7 @@ const ProfileHeader = () => {
     });
 
     useEffect(() => {
-        userApi.register()
+        userApi.me()
             .then(data => setUser(data))
             .catch(console.error);
     }, []);
@@ -150,7 +150,9 @@ const ProfileSection = ({user}) => (
             <p>
                 {user.city}, {user.country}
             </p>
-            <button>Edit</button>
+            <button>
+                <img src={Edit} alt="Edit" />
+            </button>
         </div>
     </div>
 );

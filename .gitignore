@@ -59,5 +59,6 @@ build/
 
 # Files with secrets
 backend/.env
+frontend/.env
+docker-compose.yml
 backend/src/main/resources/application.properties
-
