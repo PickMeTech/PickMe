@@ -1,5 +1,6 @@
 package com.pickme.controller;
 
+import com.pickme.dto.wish.BookWishRequest;
 import com.pickme.dto.wish.WishCreateRequest;
 import com.pickme.dto.wish.WishResponse;
 import com.pickme.dto.wish.WishUpdateRequest;
@@ -28,7 +29,7 @@ public class WishController {
 
     @PostMapping
     public ResponseEntity<WishResponse> createWish(
-            @PathVariable Long wishListId,
+            @PathVariable("wishListId") Long wishListId,
             @Valid @RequestBody WishCreateRequest request) {
         Wish created = wishService.createWish(wishListId, request);
         WishResponse response = wishMapper.mapToWishResponse(created);
@@ -38,7 +39,7 @@ public class WishController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WishResponse>> getAllWishes(@PathVariable Long wishListId) {
+    public ResponseEntity<List<WishResponse>> getAllWishes(@PathVariable("wishListId") Long wishListId) {
         List<WishResponse> dtos = wishService
                 .findByWishListId(wishListId)
                 .stream()
@@ -48,16 +49,30 @@ public class WishController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WishResponse> getWish(@PathVariable Long wishListId, @PathVariable Long id) {
+    public ResponseEntity<WishResponse> getWish(@PathVariable("wishListId") Long wishListId, @PathVariable("id") Long id) {
         Wish wish = wishService.findByWishListIdAndId(wishListId, id);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/peek-oldest")
+    public ResponseEntity<WishResponse> getOldestWishes(@PathVariable("wishListId") Long wishListId) {
+        Wish wish = wishService.getOldestWish(wishListId);
+        WishResponse response = wishMapper.mapToWishResponse(wish);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/peek-newest")
+    public ResponseEntity<WishResponse> getNewestWishes(@PathVariable("wishListId") Long wishListId) {
+        Wish wish = wishService.getNewestWish(wishListId);
         WishResponse response = wishMapper.mapToWishResponse(wish);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WishResponse> updateWish(
-            @PathVariable Long wishListId,
-            @PathVariable Long id,
+            @PathVariable("wishListId") Long wishListId,
+            @PathVariable("id") Long id,
             @Valid @RequestBody WishUpdateRequest request) {
         Wish wish = wishService.updateWish(wishListId, id, request);
         WishResponse response = wishMapper.mapToWishResponse(wish);
@@ -66,9 +81,19 @@ public class WishController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<WishResponse> deleteWish(
-            @PathVariable Long wishListId,
-            @PathVariable Long id) {
+            @PathVariable("wishListId") Long wishListId,
+            @PathVariable("id") Long id) {
         wishService.deleteWish(wishListId, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/from-book")
+    public ResponseEntity<WishResponse> addWishFromBook(
+            @PathVariable("wishListId") Long wishListId,
+            @RequestBody BookWishRequest request) {
+        Wish wish = wishMapper.mapFromBookRequest(request);
+        Wish created = wishService.createWishFromBook(wishListId, wish);
+        WishResponse response = wishMapper.mapToWishResponse(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

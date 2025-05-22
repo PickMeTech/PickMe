@@ -2,11 +2,13 @@ package com.pickme.service;
 
 import com.pickme.dto.user.UserRegistrationRequest;
 import com.pickme.dto.user.UserUpdateRequest;
+import com.pickme.logging.Loggable;
 import com.pickme.mapper.UserMapper;
 import com.pickme.model.User;
 import com.pickme.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    @Loggable(level = LogLevel.INFO)
     public User createUser(UserRegistrationRequest dto) {
         User user = userMapper.mapFromRegistrationRequest(dto);
         return userRepository.save(user);

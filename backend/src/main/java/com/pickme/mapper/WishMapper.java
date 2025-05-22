@@ -1,5 +1,6 @@
 package com.pickme.mapper;
 
+import com.pickme.dto.wish.BookWishRequest;
 import com.pickme.dto.wish.WishCreateRequest;
 import com.pickme.dto.wish.WishResponse;
 import com.pickme.dto.wish.WishUpdateRequest;
@@ -41,5 +42,13 @@ public class WishMapper {
         wish.setImageUrl(dto.getImageUrl());
         wish.setUrl(dto.getUrl());
         wish.setPicked(dto.getPicked() != null ? dto.getPicked() : false);
+    }
+
+    public Wish mapFromBookRequest(BookWishRequest dto) {
+        Wish wish = new Wish();
+        wish.setTitle(dto.getTitle());
+        wish.setDescription(dto.getDescription());
+        wish.setPicked(false);
+        return wish;
     }
 }

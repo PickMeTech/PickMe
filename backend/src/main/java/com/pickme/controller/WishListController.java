@@ -29,7 +29,7 @@ WishListController {
 
     @PostMapping
     public ResponseEntity<WishListResponse> createWishList(
-            @PathVariable Long userId,
+            @PathVariable("userId") Long userId,
             @Valid @RequestBody WishListCreateRequest dto) {
         WishList created = wishListService.createWishList(userId, dto);
         WishListResponse response = wishListMapper.toWishListResponse(created);
@@ -39,7 +39,7 @@ WishListController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WishListResponse>> getWishListsByUser(@PathVariable Long userId){
+    public ResponseEntity<List<WishListResponse>> getWishListsByUser(@PathVariable("userId") Long userId){
         List<WishList> lists = wishListService.findByUserId(userId);
         List<WishListResponse> dtos = lists.stream()
                 .map(wishListMapper::toWishListResponse)
@@ -49,15 +49,15 @@ WishListController {
 
     @GetMapping("/{id}")
     public ResponseEntity<WishListResponse> getWishListById(
-            @PathVariable Long userId, @PathVariable Long id) {
+            @PathVariable("userId") Long userId, @PathVariable("id") Long id) {
         WishList wishList = wishListService.findByUserIdAndId(userId, id);
         return ResponseEntity.ok(wishListMapper.toWishListResponse(wishList));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WishListResponse> updateWishList(
-            @PathVariable Long userId,
-            @PathVariable Long id,
+            @PathVariable("userId") Long userId,
+            @PathVariable("id") Long id,
             @Valid @RequestBody WishListUpdateRequest dto) {
 
         WishList updated = wishListService.updateWishList(userId, id, dto);
@@ -67,7 +67,7 @@ WishListController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<WishListResponse> deleteWishList(
-            @PathVariable Long userId, @PathVariable Long id) {
+            @PathVariable("userId") Long userId, @PathVariable("id") Long id) {
         wishListService.deleteWishList(userId, id);
         return ResponseEntity.noContent().build();
     }
