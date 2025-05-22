@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long id)  {
+    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable("id") Long id)  {
         User user = userService.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return ResponseEntity.ok(userMapper.mapToProfileResponse(user));
@@ -52,14 +52,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable Long id,
+    public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable("id") Long id,
                                                           @Valid @RequestBody UserUpdateRequest dto) {
         User updatedUser = userService.updateUserFromDto(id, dto);
         return ResponseEntity.ok(userMapper.mapToProfileResponse(updatedUser));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id)  {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id)  {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
