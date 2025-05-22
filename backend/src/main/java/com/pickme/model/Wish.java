@@ -1,9 +1,17 @@
 package com.pickme.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "wishes")
 public class Wish {
@@ -40,84 +48,12 @@ public class Wish {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public WishList getWishList() {
-        return wishList;
-    }
-
-    public void setWishList(WishList wishList) {
-        this.wishList = wishList;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
     public Boolean isPicked() {
         return picked;
     }
 
     public void setPicked(Boolean picked) {
         this.picked = picked;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @PrePersist
