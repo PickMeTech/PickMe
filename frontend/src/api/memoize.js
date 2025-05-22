@@ -1,9 +1,9 @@
-import fetch from "node-fetch";
-import requestToHash from "./hasher";
+import requestToHash from "./hasher.js";
 
 function memoize(
     fetchFunction = fetch,
-    hashFunction = requestToHash
+    hashFunction = requestToHash,
+    expirationTime = 1000 * 60 * 5
 ) {
     const promiseCache = new Map();
 
@@ -18,13 +18,14 @@ function memoize(
 
     return function (url, options) {
         const key = hashFunction(url, options);
-
+//чи час більший ніж коли дата в нас має зникнути
         if (promiseCache.has(key)) {
-            return promiseCache.get(key);
+           if (expirationTime > Date.now()) {
+               return promiseCache.get(key);
+           }
         }
-
         const p = wrapper(key, fetchFunction(url, options));
-        promiseCache.set(key, p);
+        promiseCache.set(key, {p, expiresDate: Date.now() + expirationTime });
         return p;
     };
 }
