@@ -34,8 +34,9 @@ public class WishService {
 
         Long userId = wishList.getUser().getId();
         String wishTitle = wish.getTitle();
+        String userEmail = wishList.getUser().getEmail();
 
-        applicationEventPublisher.publishEvent(new WishCreatedEvent(userId, wishListId, wishTitle));
+        applicationEventPublisher.publishEvent(new WishCreatedEvent(userId, wishListId, wishTitle, userEmail));
         return savedWish;
     }
 
