@@ -1,5 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
+const memoizedFetch = memoize();
+
 export class UserApi {
     async login(emailOrUsername, password) {
         const res = await fetch(`${API_BASE}/login`, {
@@ -20,7 +22,7 @@ export class UserApi {
     }
 
     async me() {
-        const res = await fetch(`${API_BASE}/api/users/me`, {
+        const res =  await memoizedFetch(`${API_BASE}/api/users/me`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Not authenticated");
