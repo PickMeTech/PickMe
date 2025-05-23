@@ -1,45 +1,82 @@
-import React from "react";
-import Search from "/src/assets/search.png";
-import WishItem from "./WishItem";
+import React, { useEffect, useState } from "react";
+import WishItem   from "./WishItem";
+import { wishApi } from "@/api/WishAPI";
+import Search from "../../assets/search.png";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const picks = [
-    { id: 1, type: "add", label: "add pick" },
-    { id: 2, label: "PINKAROUND - YLS45...", status: "in-progress" },
-    { id: 3, label: "Книга «Есенціалізм»" },
-    { id: 4, label: "Книга «Нові кавові п..." },
-    { id: 5, label: "Комплект книг Кров...", status: "picked" },
-    { id: 6, label: "Іздрик збірка «Лінив...»", status: "picked" },
-    { id: 7, label: "Трояндочки", status: "picked" },
-    { id: 8, label: "Так ніхто не кохав Ан...", status: "picked" },
-];
+const WishList = ({ wishListId, onAdd }) => {
+    const [wishes, setWishes]   = useState([]);
+    const [search, setSearch]   = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError]     = useState(null);
 
-const WishList = () => {
-    const groupedPicks = {
-        active: picks.filter(pick => !pick.status || pick.type === "add"),
-        picked: picks.filter(pick => pick.status === "picked")
-    };
+    useEffect(() => {
+        if (!wishListId) return;
+        wishApi
+            .getAllWishes(wishListId)
+            .then(setWishes)
+            .catch(() => setError("Failed to load wishes"))
+            .finally(() => setLoading(false));
+    }, [wishListId]);
+
+    if (loading) return <div className="text-center py-5">Loading picks…</div>;
+    if (error)   return <div className="alert alert-danger">{error}</div>;
+
+    const filtered = wishes.filter(w =>
+        w.title.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const active = [{ type: "add", id: "add" }, ...filtered.filter(w => w.status !== "picked")];
+    const picked = filtered.filter(w => w.status === "picked");
 
     return (
-        <div className="picklist-container">
-            <div className="picklist-label">your picklist</div>
-            <div className="picklist-section">
-                <div className="search-field small">
-                    <img src={Search} className="search-icon" alt="Search" />
-                    <div className="search-text">Search</div>
-                </div>
+        <div className="container py-4">
 
-                <div className="wishes-grid">
-                    {groupedPicks.active.map(pick => (
-                        <WishItem key={pick.id} {...pick} />
-                    ))}
-                </div>
+            {/* title */}
+            <h5 className="text-uppercase text-muted mb-3">your picklist</h5>
 
-                <div className="wishes-grid">
-                    {groupedPicks.picked.map(pick => (
-                        <WishItem key={pick.id} {...pick} />
-                    ))}
-                </div>
+            {/* search */}
+            <div className="input-group mb-4">
+        <span className="input-group-text bg-white border-end-0">
+          <img src={SearchIcon} alt="Search" style={{ width: 20 }} />
+        </span>
+                <input
+                    type="text"
+                    className="form-control border-start-0"
+                    placeholder="Search"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                />
             </div>
+
+            {/* active cards */}
+            <div className="row row-cols-2 row-cols-md-4 g-3 mb-4">
+                {active.map(item =>
+                    item.type === "add" ? (
+                        <div className="col" key="add">
+                            <WishItem type="add" onAdd={onAdd} />
+                        </div>
+                    ) : (
+                        <div className="col" key={item.id}>
+                            <WishItem {...item} />
+                        </div>
+                    )
+                )}
+            </div>
+
+            {/* picked cards */}
+            {picked.length > 0 && (
+                <>
+                    <h6 className="text-muted mb-2">Picked</h6>
+                    <div className="row row-cols-2 row-cols-md-4 g-3">
+                        {picked.map(item => (
+                            <div className="col" key={item.id}>
+                                <WishItem {...item} />
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

@@ -5,14 +5,14 @@ const memoizedFetch = memoize();
 
 export class WishListApi {
     async createWishList(userId, wishListData) {
-        const {name, description} = wishListData;
+        const { name, description } = wishListData;
         const res = await fetch(
             `${API_BASE}/api/users/${userId}/wishlists`,
             {
                 method: "POST",
                 credentials: "include",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({name, description})
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, description })
             }
         );
         if (!res.ok) throw new Error("Failed to create wish list");
@@ -22,7 +22,7 @@ export class WishListApi {
     async getAllWishLists(userId) {
         const res = await memoizedFetch(
             `${API_BASE}/api/users/${userId}/wishlists`,
-            {credentials: "include"}
+            { credentials: "include" }
         );
         if (!res.ok) throw new Error("Failed to fetch wish lists");
         return res.json();
@@ -31,21 +31,21 @@ export class WishListApi {
     async getWishList(userId, wishListId) {
         const res = await memoizedFetch(
             `${API_BASE}/api/users/${userId}/wishlists/${wishListId}`,
-            {credentials: "include"}
+            { credentials: "include" }
         );
         if (!res.ok) throw new Error("Failed to fetch wish list");
         return res.json();
     }
 
     async updateWishList(userId, wishListId, wishListData) {
-        const {name, description} = wishListData;
+        const { name, description } = wishListData;
         const res = await fetch(
             `${API_BASE}/api/users/${userId}/wishlists/${wishListId}`,
             {
                 method: "PUT",
                 credentials: "include",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({name, description})
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, description })
             }
         );
         if (!res.ok) throw new Error("Failed to update wish list");
