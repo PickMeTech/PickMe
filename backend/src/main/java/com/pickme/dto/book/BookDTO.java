@@ -12,11 +12,12 @@ import lombok.Setter;
 public class BookDTO {
 
     private String title;
-    private String author;
     private String description;
+    private String previewUrl;
+    private Double price;
 
     @Override
     public String toString() {
-        return "[title=" + title + ", author=" + author + "]";
+        return "[title=" + title + "]";
     }
 }
