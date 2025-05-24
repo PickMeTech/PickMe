@@ -6,7 +6,7 @@ const memoizedFetch = memoize();
 
 export class WishApi {
     async createWish(wishListId, wishData) {
-        const { title, description, price, url, imageUrl } = wishData;
+        const {title, description, price, url, imageUrl} = wishData;
         const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
             method: "POST",
             credentials: "include",
@@ -50,7 +50,7 @@ export class WishApi {
     }
 
     async updateWish(wishListId, wishId, wishData) {
-        const { title, description, price, url, imageUrl } = wishData;
+        const {title, description, price, url, imageUrl} = wishData;
         const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
             method: "PUT",
             credentials: "include",

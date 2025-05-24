@@ -8,7 +8,7 @@ import Socials from "../../assets/socials-button.png";
 import Email from "../../assets/email-button.png";
 import Share from "../../assets/share-button.png";
 import Edit from "../../assets/edit-button1.png";
-
+import "./ProfilePage.css";
 const ProfileHeader = () => {
     const [user, setUser] = useState({
         username: "",

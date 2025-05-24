@@ -9,6 +9,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/register" element={<RegisterComponent />} />
+                <Route path="me" element={<ProfilePage />} />
                 <Route path="/" element={<ProfilePage />} />
                 <Route path="/login" element={<LoginComponent />} />
             </Routes>

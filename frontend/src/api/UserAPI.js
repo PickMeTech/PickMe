@@ -52,7 +52,8 @@ export class UserApi {
             let msg = `Registration failed (${res.status})`;
             try {
                 msg = (await res.json()).message || msg;
-            } catch {
+            } catch (error){
+                console.error("Error parsing response JSON:", error);
             }
             throw new Error(msg);
         }

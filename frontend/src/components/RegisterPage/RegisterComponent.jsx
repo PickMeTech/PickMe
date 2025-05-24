@@ -24,7 +24,7 @@ const RegisterComponent = () => {
         try {
             const response = await userApi.register(formData);
             console.log("Registration successful:", response);
-            navigate("/profile");
+            navigate("/api/users/me");
         } catch (error) {
             console.error("Registration error:", error);
             setError(error.message || "Registration failed");

@@ -11,10 +11,13 @@ function memoize(
         const key = hashFunction(url, options);
         const cached = promiseCache.get(key);
 
-        if (cached && cached.expiresDate > Date.now()) {
-            return cached.promise;
+        if (cached) {
+            if (cached.expiresDate > Date.now()) {
+                return cached.promise;
+            } else {
+                promiseCache.delete(key);
+            }
         }
-
         const promise = fetchFunction(url, options);
         promiseCache.set(key, {
             promise,

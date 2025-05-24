@@ -17,7 +17,7 @@ const LoginComponent = () => {
         try {
             await userApi.login(formData.username, formData.password);
             console.log("Login successful");
-            navigate("/profile");
+            navigate("/me");
         } catch (error) {
             console.error("Login error:", error);
             setError(error.message || "Login failed");
