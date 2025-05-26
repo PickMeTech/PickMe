@@ -111,21 +111,23 @@ const ProfileSection = ({user}) => (
         <img src={Profile} className="avatar" alt="Profile"/>
         <div className="profile-details">
             <div className="details-header">
-                <span className="hint">username</span>
-                <strong className="username">{user.username}</strong>
+                <div className="user-info">
+                    <span className="hint">username</span>
+                    <strong className="username">{user.username}</strong>
+                </div>
                 <div className="actions">
-                    <button onClick={() => { /* TODO:share function */
-                    }}>
+                    <button className="icon-button">
                         <img src={Share} alt="Share"/>
                     </button>
-                    <button onClick={() => { /* TODO:edit function */
-                    }}>
+                    <button className="icon-button">
                         <img src={Edit} alt="Edit"/>
                     </button>
                 </div>
             </div>
+
             <span className="hint">about me</span>
-            <p className="bio">{user.bio || "tell the world what you want to pick :)"}</p>
+            <p className="bio">{user.bio ? user.bio :
+                <span className="hint">tell the world what you want to pick :)</span>}</p>
             <div className="social-icons">
                 <button
                     className="social-button"
@@ -133,29 +135,31 @@ const ProfileSection = ({user}) => (
                         /* TODO: open socials link */
                     }}
                 >
-                    <img src={Socials} alt="Socials" />
+                    <img src={Socials} alt="Socials"/>
                 </button>
                 {user.email && (
                     <button
                         className="social-button"
                         onClick={() => (window.location = `mailto:${user.email}`)}
                     >
-                        <img src={Email} alt="Email" />
+                        <img src={Email} alt="Email"/>
                     </button>
                 )}
             </div>
         </div>
         <div className="delivery">
-            <strong>Pick delivery address</strong>
-            <p>
-                {user.city}, {user.country}
+            <p className="hint">pick delivery address</p>
+            <p className="delivery-address">
+    <span>
+        {user.city}, {user.country}
+    </span>
+                <button className="delivery-button">
+                    <img src={Edit} alt="Edit"/>
+                </button>
             </p>
-            <button>
-                <img src={Edit} alt="Edit" />
-            </button>
         </div>
     </div>
 );
 
 export default ProfileHeader;
-export { Header };
+export {Header};
