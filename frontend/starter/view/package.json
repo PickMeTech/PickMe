@@ -8,8 +8,10 @@
     "proxy": "http://localhost:3000"
   },
   "dependencies": {
+    "bootstrap": "^5.3.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.6.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
@@ -18,15 +20,18 @@
   },
   "eslintConfig": {
     "extends": [
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:prettier/recommended"
-        ],
-        "parser": "@typescript-eslint/parser",
-        "plugins": ["react", "@typescript-eslint"],
-        "rules": {
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off"
-        }
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "react",
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off"
     }
   }
+}
