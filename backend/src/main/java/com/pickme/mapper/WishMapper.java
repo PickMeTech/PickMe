@@ -48,6 +48,8 @@ public class WishMapper {
         Wish wish = new Wish();
         wish.setTitle(dto.getTitle());
         wish.setDescription(dto.getDescription());
+        wish.setUrl(dto.getPreviewUrl());
+        wish.setPrice((int) Math.round(dto.getPrice()));
         wish.setPicked(false);
         return wish;
     }

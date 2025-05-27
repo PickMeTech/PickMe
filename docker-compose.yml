@@ -1,0 +1,50 @@
+services:
+  backend:
+    env_file:
+      - .env
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${SPRING_DATASOURCE_DB}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      aws.access-key-id: ${YOUR_ACCESS_KEY}
+      aws.secret-access-key: ${YOUR_SECRET_KEY}
+      aws.region: ${AWS_REGION}
+      aws.s3.bucket-name: ${AWS_BUCKET_NAME}
+    networks:
+      - pickme-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    networks:
+      - pickme-net
+
+  db:
+    container_name: pickme-postgres
+    image: postgres:15
+    ports:
+      - "5332:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${SPRING_DATASOURCE_DB}
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+        - pickme_db:/data/postgres
+    networks:
+      - pickme-net
+
+volumes:
+  pickme_db:
+
+networks:
+  pickme-net:

@@ -5,16 +5,21 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.pickme</groupId>
-		<artifactId>pickme-parent</artifactId>
-		<version>1.0.0</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath/>
 	</parent>
 
+	<groupId>com.pickme</groupId>
 	<artifactId>pickme</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PickMe Backend</name>
 	<description>Spring Boot backend for PickMe</description>
+
+	<properties>
+		<java.version>21</java.version>
+	</properties>
 
 	<dependencies>
 		<dependency>

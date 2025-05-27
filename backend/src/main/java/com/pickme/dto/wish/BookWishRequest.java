@@ -9,4 +9,6 @@ public class BookWishRequest {
 
     private String title;
     private String description;
+    private String previewUrl;
+    private Double price;
 }
