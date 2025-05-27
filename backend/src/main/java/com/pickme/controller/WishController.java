@@ -91,8 +91,7 @@ public class WishController {
     public ResponseEntity<WishResponse> addWishFromBook(
             @PathVariable("wishListId") Long wishListId,
             @RequestBody BookWishRequest request) {
-        Wish wish = wishMapper.mapFromBookRequest(request);
-        Wish created = wishService.createWishFromBook(wishListId, wish);
+        Wish created = wishService.createWishFromBook(wishListId, request);
         WishResponse response = wishMapper.mapToWishResponse(created);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

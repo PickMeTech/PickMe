@@ -7,15 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node / Frontend
 node_modules
 dist
 dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
-.idea
 .DS_Store
 *.suo
 *.ntvs*
@@ -39,7 +38,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -57,8 +56,13 @@ build/
 ### VS Code ###
 .vscode/
 
-# Files with secrets
-backend/.env
-frontend/.env
-docker-compose.yml
-backend/src/main/resources/application.properties
+# Docker environment files
+.env*
+.env.local
+.dockerignore
+
+# Vite output (frontend/view/)
+frontend/view/dist/
+
+# Backend Maven build
+backend/target/

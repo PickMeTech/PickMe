@@ -1,5 +1,6 @@
 package com.pickme.service;
 
+import com.pickme.dto.wish.BookWishRequest;
 import com.pickme.dto.wish.WishCreateRequest;
 import com.pickme.dto.wish.WishUpdateRequest;
 import com.pickme.events.WishCreatedEvent;
@@ -82,9 +83,10 @@ public class WishService {
         return wishes.getFirst();
     }
 
-    public Wish createWishFromBook(Long wishListId, Wish wish) {
+    public Wish createWishFromBook(Long wishListId, BookWishRequest dto) {
         WishList wishList = wishListRepository.findById(wishListId)
                 .orElseThrow(() -> new EntityNotFoundException("WishList not found with id: " + wishListId));
+        Wish wish = wishMapper.mapFromBookRequest(dto);
         wish.setWishList(wishList);
         return wishRepository.save(wish);
     }
