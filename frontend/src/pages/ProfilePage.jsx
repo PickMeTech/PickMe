@@ -1,7 +1,7 @@
 import React from "react";
-import ProfileHeader from "./ProfileHeader.jsx";
-import WishList from "./WishList.jsx";
-import "./ProfilePage.css";
+import ProfileHeader from "@/components/ProfileHeader.jsx";
+import WishList from "@/components/WishList.jsx";
+import "@/styles/ProfilePage.css";
 
 const ProfilePage = () => {
     return (

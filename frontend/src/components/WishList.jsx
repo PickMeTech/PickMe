@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import WishItem   from "./WishItem";
+import WishItem   from "./WIshItem";
 import { wishApi } from "@/api/WishAPI";
-import Search from "../../assets/search.png";
+import Search from "../assets/search.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const WishList = ({ wishListId, onAdd }) => {
@@ -32,10 +32,8 @@ const WishList = ({ wishListId, onAdd }) => {
     return (
         <div className="container py-4">
 
-            {/* title */}
             <h5 className="text-uppercase text-muted mb-3">your picklist</h5>
 
-            {/* search */}
             <div className="input-group mb-4">
         <span className="input-group-text bg-white border-end-0">
           <img src={SearchIcon} alt="Search" style={{ width: 20 }} />

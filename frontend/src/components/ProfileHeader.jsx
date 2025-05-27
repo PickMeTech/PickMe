@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
-import Profile from "../../assets/avatar.png";
-import Search from "../../assets/search.png";
-import Logo from "../../assets/logo.png";
-import Socials from "../../assets/socials-button.png";
-import Email from "../../assets/email-button.png";
-import Share from "../../assets/share-button.png";
-import Edit from "../../assets/edit-button1.png";
-import "./ProfilePage.css";
+import Profile from "../assets/avatar.png";
+import Search from "../assets/search.png";
+import Logo from "../assets/logo.png";
+import Socials from "../assets/socials-button.png";
+import Email from "../assets/email-button.png";
+import Share from "../assets/share-button.png";
+import Edit from "../assets/edit-button1.png";
+import "../styles/ProfilePage.css";
 const ProfileHeader = () => {
     const [user, setUser] = useState({
         username: "",
@@ -105,7 +105,6 @@ const Header = () => {
         </div>
     );
 };
-
 const ProfileSection = ({user}) => (
     <div className="profile-section">
         <img src={Profile} className="avatar" alt="Profile"/>
@@ -132,7 +131,7 @@ const ProfileSection = ({user}) => (
                 <button
                     className="social-button"
                     onClick={() => {
-                        /* TODO: open socials link */
+                        (window.location = user.socials)
                     }}
                 >
                     <img src={Socials} alt="Socials"/>
@@ -146,17 +145,16 @@ const ProfileSection = ({user}) => (
                     </button>
                 )}
             </div>
-        </div>
-        <div className="delivery">
-            <p className="hint">pick delivery address</p>
-            <p className="delivery-address">
-    <span>
-        {user.city}, {user.country}
-    </span>
-                <button className="delivery-button">
-                    <img src={Edit} alt="Edit"/>
-                </button>
-            </p>
+
+            <div className="delivery">
+                <span className="hint">pick delivery address</span>
+                <div className="delivery-address">
+                    <span>{user.city}, {user.country}</span>
+                    <button className="delivery-button">
+                        <img src={Edit} alt="Edit"/>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 );
