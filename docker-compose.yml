@@ -39,12 +39,12 @@ services:
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       PGDATA: /data/postgres
     volumes:
-      - pgdata:/data/postgres
+        - pickme_db:/data/postgres
     networks:
       - pickme-net
 
 volumes:
-  pgdata:
+  pickme_db:
 
 networks:
   pickme-net:
