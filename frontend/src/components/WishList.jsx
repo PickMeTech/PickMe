@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import WishItem   from "./WIshItem";
+import WishItem, { WishItemAdd } from "./WishItem";
 import { wishApi } from "@/api/WishAPI";
 import Search from "../assets/search.png";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -36,7 +36,7 @@ const WishList = ({ wishListId, onAdd }) => {
 
             <div className="input-group mb-4">
         <span className="input-group-text bg-white border-end-0">
-          <img src={SearchIcon} alt="Search" style={{ width: 20 }} />
+          <img src={Search} alt="Search" style={{ width: 20 }} />
         </span>
                 <input
                     type="text"
@@ -52,7 +52,7 @@ const WishList = ({ wishListId, onAdd }) => {
                 {active.map(item =>
                     item.type === "add" ? (
                         <div className="col" key="add">
-                            <WishItem type="add" onAdd={onAdd} />
+                            <WishItemAdd onClick={onAdd} />
                         </div>
                     ) : (
                         <div className="col" key={item.id}>
