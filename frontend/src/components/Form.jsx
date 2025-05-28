@@ -48,6 +48,7 @@ const Form = ({
     const updateFormData = (field, value) => {
         setFormData({...formData, [field]: value});
     };
+
     if (formType === 'add-wishlist') {
         return (
             <form className="input-group" onSubmit={handleSubmit} style={{minWidth: 220}}>

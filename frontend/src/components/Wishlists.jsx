@@ -16,93 +16,92 @@ const WishLists = () => {
     const [currentListId, setCurrentListId] = useState(null);
     const [showAdd, setShowAdd] = useState(false);
 
-    // Mock data for development/testing
-    const mockData = useMemo(() => ({
-        user: {
-            id: "user-123",
-            name: "Test User",
-            email: "test@example.com"
-        },
-        lists: [
-            {
-                id: "list-1",
-                name: "Birthday Wishlist",
-                description: "Things I want for my birthday",
-                userId: "user-123"
-            },
-            {
-                id: "list-2",
-                name: "Christmas Wishlist",
-                description: "Holiday gift ideas",
-                userId: "user-123"
-            }
-        ],
-        wishes: {
-            "list-1": [
-                {
-                    id: "wish-1",
-                    title: "New Headphones",
-                    description: "Noise cancelling headphones",
-                    status: "active",
-                    price: "199.99",
-                    url: "https://example.com/headphones"
-                },
-                {
-                    id: "wish-2",
-                    title: "Book: React Patterns",
-                    description: "Latest edition",
-                    status: "picked",
-                    price: "39.99",
-                    url: "https://example.com/book"
-                }
-            ],
-            "list-2": [
-                {
-                    id: "wish-3",
-                    title: "Winter Jacket",
-                    description: "Size L, black color",
-                    status: "active",
-                    price: "129.99",
-                    url: "https://example.com/jacket"
-                }
-            ]
-        }
-    }), []);
+    // // Mock data for development/testing
+    // const mockData = useMemo(() => ({
+    //     user: {
+    //         id: "user-123",
+    //         name: "Test User",
+    //         email: "test@example.com"
+    //     },
+    //     lists: [
+    //         {
+    //             id: "list-1",
+    //             name: "Birthday Wishlist",
+    //             description: "Things I want for my birthday",
+    //             userId: "user-123"
+    //         },
+    //         {
+    //             id: "list-2",
+    //             name: "Christmas Wishlist",
+    //             description: "Holiday gift ideas",
+    //             userId: "user-123"
+    //         }
+    //     ],
+    //     wishes: {
+    //         "list-1": [
+    //             {
+    //                 id: "wish-1",
+    //                 title: "New Headphones",
+    //                 description: "Noise cancelling headphones",
+    //                 status: "active",
+    //                 price: "199.99",
+    //                 url: "https://example.com/headphones"
+    //             },
+    //             {
+    //                 id: "wish-2",
+    //                 title: "Book: React Patterns",
+    //                 description: "Latest edition",
+    //                 status: "picked",
+    //                 price: "39.99",
+    //                 url: "https://example.com/book"
+    //             }
+    //         ],
+    //         "list-2": [
+    //             {
+    //                 id: "wish-3",
+    //                 title: "Winter Jacket",
+    //                 description: "Size L, black color",
+    //                 status: "active",
+    //                 price: "129.99",
+    //                 url: "https://example.com/jacket"
+    //             }
+    //         ]
+    //     }
+    // }), []);
 
-    // Use mock data instead of API calls for development
-    const fetchInitialData = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            // Comment out actual API calls and use mock data instead
-            // const userData = await userApi.me();
-            // setUser(userData);
-            // const listsData = await wishListApi.getAllWishLists(userData.id);
-
-            setUser(mockData.user);
-            setLists(mockData.lists);
-            setCurrentListId(mockData.lists[0]?.id || null);
-        } catch (err) {
-            setError("Failed to load data");
-        } finally {
-            setLoading(false);
-        }
+    // // Use mock data instead of API calls for development
     // const fetchInitialData = useCallback(async () => {
     //     setLoading(true);
     //     setError(null);
     //     try {
-    //         const userData = await userApi.me();
-    //         setUser(userData);
-    //         const listsData = await wishListApi.getAllWishLists(userData.id);
-    //         setLists(listsData);
-    //         setCurrentListId(listsData[0]?.id || null);
+    //         // Comment out actual API calls and use mock data instead
+    //         // const userData = await userApi.me();
+    //         // setUser(userData);
+    //         // const listsData = await wishListApi.getAllWishLists(userData.id);
+    //
+    //         setUser(mockData.user);
+    //         setLists(mockData.lists);
+    //         setCurrentListId(mockData.lists[0]?.id || null);
     //     } catch (err) {
     //         setError("Failed to load data");
     //     } finally {
     //         setLoading(false);
     //     }
-    // }, []);
-    }, [mockData]);
+    const fetchInitialData = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const userData = await userApi.me();
+            setUser(userData);
+            const listsData = await wishListApi.getAllWishLists(userData.id);
+            setLists(listsData);
+            setCurrentListId(listsData[0]?.id || null);
+        } catch (err) {
+            setError("Failed to load data");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
         fetchInitialData();

@@ -19,13 +19,19 @@ services:
     networks:
       - pickme-net
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:80"
-    restart: unless-stopped
-    networks:
-      - pickme-net
+#  frontend:
+#    build: ./frontend
+#    ports:
+#      - "3000:3000"
+#    restart: unless-stopped
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
+#    working_dir: /app
+#    command: npm run dev
+#    networks:
+#      - pickme-net
+
 
   db:
     container_name: pickme-postgres

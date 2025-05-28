@@ -5,18 +5,13 @@ import Form from "@/components/Form";
 import {Header} from "@/components/ProfileHeader";
 
 const LoginPage = () => {
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-    });
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (data) => {
         setError(null);
         try {
-            await userApi.login(formData.username, formData.password);
+            await userApi.login(data.username, data.password);
             console.log("Login successful");
             navigate("/me");
         } catch (error) {

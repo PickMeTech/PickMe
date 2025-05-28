@@ -21,9 +21,16 @@ const ProfileHeader = () => {
     });
 
     useEffect(() => {
-        userApi.me()
-            .then(data => setUser(data))
-            .catch(console.error);
+        const fetchUserData = async () => {
+            try {
+                const data = await userApi.me();
+                setUser(data);
+            } catch (error) {
+                console.error('Failed to fetch user data:', error);
+            }
+        };
+
+        fetchUserData();
     }, []);
 
     return (
@@ -34,9 +41,7 @@ const ProfileHeader = () => {
     );
 };
 
-
 const Header = () => {
-
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const dropdownRef = React.useRef(null);
@@ -86,7 +91,7 @@ const Header = () => {
                 {menuOpen && (
                     <ul className="dropdown-menu dropdown-menu-end shadow show">
                         <li>
-                            <NavLink to="/" className="dropdown-item">
+                            <NavLink to="/me" className="dropdown-item">
                                 Profile
                             </NavLink>
                         </li>
@@ -106,6 +111,7 @@ const Header = () => {
         </div>
     );
 };
+
 const ProfileSection = ({user}) => (
     <div className="profile-section">
         <img src={Profile} className="avatar" alt="Profile"/>
@@ -132,7 +138,9 @@ const ProfileSection = ({user}) => (
                 <button
                     className="social-button"
                     onClick={() => {
-                        (window.location = user.socials)
+                        if (user.socials) {
+                            window.location = user.socials;
+                        }
                     }}
                 >
                     <img src={Socials} alt="Socials"/>
