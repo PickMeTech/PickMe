@@ -3,7 +3,7 @@ import memoize from "./memoize.js";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 const memoizedFetch = memoize();
 
-export class WishListApi {
+export class WishListAPI {
     async createWishList(userId, wishListData) {
         const {name, description} = wishListData;
         const res = await fetch(
@@ -64,4 +64,4 @@ export class WishListApi {
     }
 }
 
-export const wishListApi = new WishListApi();
+export const wishListApi = new WishListAPI();
