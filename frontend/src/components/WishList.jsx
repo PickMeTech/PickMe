@@ -1,80 +1,127 @@
-import React, { useEffect, useState } from "react";
-import WishItem, { WishItemAdd } from "./WishItem";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import WishItem from "@/components/WishItem";
+import Form from "@/components/Form";
+import SearchPanel  from "@/components/SearchPanel";
+import Button from "@/components/Button";
 import { wishApi } from "@/api/WishAPI";
-import Search from "../assets/search.png";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "@/styles/WishLists.css";
 
-const WishList = ({ wishListId, onAdd }) => {
-    const [wishes, setWishes]   = useState([]);
-    const [search, setSearch]   = useState("");
+const WishList = ({ listId, title, onDeleteList }) => {
+    const [wishes, setWishes] = useState([]);
+    const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
-    const [error, setError]     = useState(null);
+    const [error, setError] = useState(null);
+    const [showAdd, setShowAdd] = useState(false);
+
+    const loadWishes = useCallback(() => {
+        setLoading(true);
+        setError(null);
+        wishApi.getAllWishes(listId)
+            .then(data => setWishes(data))
+            .finally(() => setLoading(false));
+    }, [listId]);
 
     useEffect(() => {
-        if (!wishListId) return;
-        wishApi
-            .getAllWishes(wishListId)
-            .then(setWishes)
-            .catch(() => setError("Failed to load wishes"))
-            .finally(() => setLoading(false));
-    }, [wishListId]);
+        if (listId) loadWishes();
+    }, [listId, loadWishes]);
 
-    if (loading) return <div className="text-center py-5">Loading picks…</div>;
-    if (error)   return <div className="alert alert-danger">{error}</div>;
+    const handleWishAdded = async (wishData) => {
+        const newWish = await wishApi.createWish(listId, wishData);
+        setWishes(prev => [...prev, newWish]);
+        setShowAdd(false);
+    };
 
-    const filtered = wishes.filter(w =>
-        w.title.toLowerCase().includes(search.toLowerCase())
-    );
+    const handleStatusChange = (wishId, newStatus) => {
+        setWishes(prev =>
+            prev.map(wish =>
+                wish.id === wishId ? { ...wish, status: newStatus } : wish
+            )
+        );
+    };
 
-    const active = [{ type: "add", id: "add" }, ...filtered.filter(w => w.status !== "picked")];
-    const picked = filtered.filter(w => w.status === "picked");
+    const handleWishDelete = (wishId) => {
+        setWishes(prev => prev.filter(wish => wish.id !== wishId));
+    };
+
+    const filteredWishes = useMemo(() =>
+        wishes.filter(wish =>
+            wish.title.toLowerCase().includes(search.toLowerCase())
+        ), [wishes, search]);
+
+    if (loading) {
+        return (
+            <div className="text-center py-5">
+                <div className="spinner-border text-secondary" role="status">
+                    <span className="visually-hidden">Loading…</span>
+                </div>
+            </div>
+        );
+    }
+    if (error) {
+        return (
+            <div className="alert alert-danger d-flex justify-content-between align-items-center">
+                {error}
+                <button className="btn btn-outline-danger btn-sm" onClick={loadWishes}>Try again</button>
+            </div>
+        );
+    }
 
     return (
-        <div className="container py-4">
-
-            <h5 className="text-uppercase text-muted mb-3">your picklist</h5>
-
-            <div className="input-group mb-4">
-        <span className="input-group-text bg-white border-end-0">
-          <img src={Search} alt="Search" style={{ width: 20 }} />
-        </span>
-                <input
-                    type="text"
-                    className="form-control border-start-0"
-                    placeholder="Search"
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                />
-            </div>
-
-            {/* active cards */}
-            <div className="row row-cols-2 row-cols-md-4 g-3 mb-4">
-                {active.map(item =>
-                    item.type === "add" ? (
-                        <div className="col" key="add">
-                            <WishItemAdd onClick={onAdd} />
-                        </div>
-                    ) : (
-                        <div className="col" key={item.id}>
-                            <WishItem {...item} />
-                        </div>
-                    )
+        <div className="picklist-container">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h1 className="header-title">{title || "Your wish list"}</h1>
+                {onDeleteList && (
+                    <Button onClick={onDeleteList}>
+                        Delete List
+                    </Button>
                 )}
             </div>
+            <div className="search-container mb-4 d-flex align-items-center">
+                <SearchPanel search={search} setSearch={setSearch}/>
+                <Button onClick={() => setShowAdd(v => !v)}>
+                    {showAdd ? "Cancel" : "Add Wish"}
+                </Button>
+            </div>
 
-            {/* picked cards */}
-            {picked.length > 0 && (
-                <>
-                    <h6 className="text-muted mb-2">Picked</h6>
-                    <div className="row row-cols-2 row-cols-md-4 g-3">
-                        {picked.map(item => (
-                            <div className="col" key={item.id}>
-                                <WishItem {...item} />
-                            </div>
-                        ))}
-                    </div>
-                </>
+            {showAdd && (
+                <div className="mb-3">
+                    <Form
+                        formType="add-wish"
+                        onSubmit={handleWishAdded}
+                        buttonText="Add Wish"
+                        initialData={{title: "", description: "", price: "", url: "", imageUrl: ""}}
+                    />
+                </div>
             )}
+            <div className="row g-4">
+                {filteredWishes.map(item => (
+                    <div className="col-lg-3 col-md-4 col-sm-6" key={item.id}>
+                        <WishItem
+                            {...item}
+                            wishListId={listId}
+                            onStatusChange={handleStatusChange}
+                            onDelete={handleWishDelete}
+                        />
+                    </div>
+                ))}
+                {filteredWishes.length === 0 && wishes.length > 0 && (
+                    <div className="col-12">
+                        <div className="text-center text-muted py-5">
+                            <i className="fas fa-search fa-3x mb-3"></i>
+                            <p>No results found for "{search}"</p>
+                        </div>
+                    </div>
+                )}
+                {wishes.length === 0 && (
+                    <div className="col-12">
+                        <div className="text-center text-muted py-5">
+                            <i className="fas fa-heart fa-3x mb-3"></i>
+                            <p>Your wish list is empty</p>
+                            <p>Add your first wish by clicking "Add Wish"</p>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

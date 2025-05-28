@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import { Header } from "@/components/ProfileHeader";
+import React, {useState} from 'react';
+import Button from '@/components/Button';
 
 const Form = ({
-                      formType = 'login',
-                      onSubmit,
-                      error = null,
-                      initialData = {},
-                      buttonText,
-                      buttonStyle = {},
-                      showSteps = false
-                  }) => {
+                  formType = 'login',
+                  onSubmit,
+                  error = null,
+                  initialData = {},
+                  buttonText,
+                  buttonStyle = {},
+                  showSteps = false
+              }) => {
     const getInitialFormData = () => {
-        if (formType === 'login') {
-            return {
-                username: "",
-                password: "",
-                ...initialData
-            };
-        } else if (formType === 'register') {
-            return {
-                username: "",
-                phoneNumber: "",
-                email: "",
-                password: "",
-                name: "",
-                surname: "",
-                birthDate: "",
-                country: "",
-                ...initialData
-            };
+        switch (formType) {
+            case 'login':
+                return {username: "", password: "", ...initialData};
+            case 'register':
+                return {
+                    username: "", phoneNumber: "", email: "", password: "",
+                    name: "", surname: "", birthDate: "", country: "",
+                    ...initialData
+                };
+            case 'add-wishlist':
+                return {name: "", description: "", ...initialData};
+            case 'add-wish':
+                return {
+                    title: "", description: "", price: "", url: "", imageUrl: "",
+                    ...initialData
+                };
+            default:
+                return {...initialData};
         }
     };
 
@@ -46,8 +46,80 @@ const Form = ({
     const prevStep = () => setCurrentStep((prev) => prev - 1);
 
     const updateFormData = (field, value) => {
-        setFormData({ ...formData, [field]: value });
+        setFormData({...formData, [field]: value});
     };
+    if (formType === 'add-wishlist') {
+        return (
+            <form className="input-group" onSubmit={handleSubmit} style={{minWidth: 220}}>
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Wishlist name"
+                    value={formData.name}
+                    onChange={e => updateFormData('name', e.target.value)}
+                />
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Description (optional)"
+                    value={formData.description}
+                    onChange={e => updateFormData('description', e.target.value)}
+                />
+                <Button type="submit" style={buttonStyle}>
+                    {buttonText || "Add"}
+                </Button>
+                {error && <div className="text-danger small mt-1 w-100">{error}</div>}
+            </form>
+        );
+    }
+
+    if (formType === 'add-wish') {
+        return (
+            <form className="input-group flex-column align-items-stretch" onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="Wish title"
+                    value={formData.title}
+                    onChange={e => updateFormData('title', e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="Description"
+                    value={formData.description}
+                    onChange={e => updateFormData('description', e.target.value)}
+                />
+                <input
+                    type="number"
+                    className="form-control mb-2"
+                    placeholder="Price"
+                    value={formData.price}
+                    onChange={e => updateFormData('price', e.target.value)}
+                />
+                <input
+                    type="url"
+                    className="form-control mb-2"
+                    placeholder="URL"
+                    value={formData.url}
+                    onChange={e => updateFormData('url', e.target.value)}
+                />
+                <input
+                    type="url"
+                    className="form-control mb-2"
+                    placeholder="Image URL"
+                    value={formData.imageUrl}
+                    onChange={e => updateFormData('imageUrl', e.target.value)}
+                />
+                <Button type="submit" style={buttonStyle}>
+                    {buttonText || "Add Wish"}
+                </Button>
+                {error && <div className="text-danger small mt-1 w-100">{error}</div>}
+            </form>
+        );
+    }
+
 
     const renderLoginForm = () => (
         <>
@@ -92,9 +164,8 @@ const Form = ({
                         </div>
                     </div>
                     <div className="d-grid gap-2 mt-3">
-                        <button
+                        <Button
                             type="submit"
-                            className="btn btn-primary"
                             style={{
                                 backgroundColor: "#F25081",
                                 color: "white",
@@ -103,7 +174,7 @@ const Form = ({
                             }}
                         >
                             {buttonText || 'Submit'}
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>
@@ -302,7 +373,6 @@ const Form = ({
 
     return (
         <>
-            <Header />
             <div className="container">
                 <div className="row justify-content-center mt-5">
                     <div className="col-md-5">

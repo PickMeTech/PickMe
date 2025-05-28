@@ -1,6 +1,6 @@
 FROM node:20 AS build
 WORKDIR /app
-COPY starter/view/ /app
+COPY . /app
 RUN npm install && npm run build
 
 FROM nginx:alpine

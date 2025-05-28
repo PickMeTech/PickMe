@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterComponent from "./pages/RegisterComponent";
+import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
-import LoginComponent from "./pages/LoginComponent";
+import LoginPage from "./pages/LoginPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/register" element={<RegisterComponent />} />
+                <Route path="/register" element={<RegisterPage />} />
                 <Route path="me" element={<ProfilePage />} />
                 <Route path="/" element={<ProfilePage />} />
-                <Route path="/login" element={<LoginComponent />} />
+                <Route path="/login" element={<LoginPage />} />
             </Routes>
         </BrowserRouter>
     );

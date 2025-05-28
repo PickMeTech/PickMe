@@ -1,13 +1,15 @@
 import React from "react";
 import ProfileHeader from "@/components/ProfileHeader.jsx";
-import WishList from "@/components/WishList.jsx";
+import WishLists from "@/components/Wishlists.jsx";
 import "@/styles/ProfilePage.css";
 
 const ProfilePage = () => {
     return (
         <div className="profile-page">
             <ProfileHeader />
-            <WishList />
+            <div className="wishlist-container">
+            <WishLists />
+            </div>
         </div>
     );
 };

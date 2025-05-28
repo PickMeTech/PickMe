@@ -24,7 +24,7 @@ export class UserApi {
     }
 
     async me() {
-        const res =  await memoizedFetch(`${API_BASE}/api/users/me`, {
+        const res =  await memoizedFetch(`${API_BASE}/users/me`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Not authenticated");
@@ -38,7 +38,7 @@ export class UserApi {
             birthDate, name, surname
         } = userData;
 
-        const res = await fetch(`${API_BASE}/api/users/register`, {
+        const res = await fetch(`${API_BASE}/users/register`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},

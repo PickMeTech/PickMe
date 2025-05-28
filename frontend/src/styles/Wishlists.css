@@ -1,0 +1,55 @@
+
+.search-field {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+    margin: 0 1rem;
+
+}
+
+.search-field input {
+    width: 100%;
+    padding: 0.375rem 2.5rem 0.375rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 50px;
+    font-size: 1rem;
+}
+
+.search-field input::placeholder {
+    color: #6c757d;
+}
+
+.search-field .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.rounded-form .card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+.wishlist-tab {
+    color: #F25081;
+    border: 1px solid #F25081;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.wishlist-tab:hover {
+    background-color: #fca8bd;
+}
+
+.wishlist-tab.active {
+    background-color: #F25081;
+    color: white;
+}
+.form-control {
+    border-radius: 20px !important;
+}
+

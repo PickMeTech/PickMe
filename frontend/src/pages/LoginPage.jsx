@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
-import { Header } from "@/components/ProfileHeader";
 import Form from "@/components/Form";
+import {Header} from "@/components/ProfileHeader";
 
-const LoginComponent = () => {
+const LoginPage = () => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -27,7 +27,7 @@ const LoginComponent = () => {
 
     return (
         <>
-
+            <Header />
             <Form
                 formType="login"
                 onSubmit={handleSubmit}
@@ -43,4 +43,4 @@ const LoginComponent = () => {
     );
 };
 
-export default LoginComponent;
+export default LoginPage;

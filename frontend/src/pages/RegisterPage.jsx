@@ -4,7 +4,7 @@ import { userApi } from "@/api/UserAPI";
 import { Header } from "@/components/ProfileHeader";
 import Form from "@/components/Form"; // Adjust import path as needed
 
-const RegisterComponent = () => {
+const RegisterPage = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -33,25 +33,17 @@ const RegisterComponent = () => {
     return (
         <>
             <Header />
-            <div className="container">
-                <div className="row justify-content-center mt-5">
-                    <div className="col-md-5">
-                        <div className="card">
-                            <Form
-                                formType="register"
-                                onSubmit={handleRegistrationForm}
-                                error={error}
-                                initialData={formData}
-                                buttonText="Complete Registration"
-                                buttonStyle={{ backgroundColor: "#198754", color: "white" }}
-                                showSteps={true}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        <Form
+                            formType="register"
+                            onSubmit={handleRegistrationForm}
+                            error={error}
+                            initialData={formData}
+                            buttonText="Complete Registration"
+                            buttonStyle={{ backgroundColor: "#F25081", color: "white" }}
+                            showSteps={true}
+                        />
         </>
     );
 };
 
-export default RegisterComponent;
+export default RegisterPage;

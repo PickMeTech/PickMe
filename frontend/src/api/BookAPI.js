@@ -2,7 +2,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export default class BookApi {
     static async search(query) {
-        const url = `${API_BASE}/api/books/search?q=${encodeURIComponent(query)}`;
+        const url = `${API_BASE}/books/search?q=${encodeURIComponent(query)}`;
         const res = await fetch(url, {
             credentials: "include"
         });
