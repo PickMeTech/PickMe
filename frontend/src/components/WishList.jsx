@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import WishItem from "@/components/WishItem";
 import Form from "@/components/Form";
 import SearchPanel  from "@/components/SearchPanel";
@@ -11,19 +11,31 @@ const WishList = ({ listId, title, onDeleteList }) => {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [filteredWishes, setFilteredWishes] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
 
-    const loadWishes = useCallback(() => {
+    const loadWishes = () => {
         setLoading(true);
         setError(null);
         wishApi.getAllWishes(listId)
             .then(data => setWishes(data))
             .finally(() => setLoading(false));
-    }, [listId]);
+    };
 
     useEffect(() => {
         if (listId) loadWishes();
     }, [listId, loadWishes]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setFilteredWishes(
+                wishes.filter(wish =>
+                    wish.title.toLowerCase().includes(search.toLowerCase())
+                )
+            );
+        }, 300)
+        return () => clearTimeout(timeoutId);
+    }, [wishes, search]);
 
     const handleWishAdded = async (wishData) => {
         const newWish = await wishApi.createWish(listId, wishData);
@@ -43,10 +55,6 @@ const WishList = ({ listId, title, onDeleteList }) => {
         setWishes(prev => prev.filter(wish => wish.id !== wishId));
     };
 
-    const filteredWishes = useMemo(() =>
-        wishes.filter(wish =>
-            wish.title.toLowerCase().includes(search.toLowerCase())
-        ), [wishes, search]);
 
     if (loading) {
         return (

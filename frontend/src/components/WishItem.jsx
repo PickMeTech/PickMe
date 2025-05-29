@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { wishApi } from "@/api/WishAPI";
 import "@/styles/WishLists.css";
 
@@ -32,7 +32,7 @@ const WishItem = ({
             .finally(() => setIsUpdating(false));
     }, [isPicked, isUpdating, wishListId, id, title, onStatusChange]);
 
-    const handleDelete = useCallback(() => {
+    const handleDelete = () => {
         if (!window.confirm("Are you sure you want to delete this wish?")) return;
         wishApi
             .deleteWish(wishListId, id)
@@ -42,7 +42,7 @@ const WishItem = ({
             .catch(() => {
                 alert("Error deleting wish");
             });
-    }, [wishListId, id, onDelete]);
+    };
 
     return (
         <div className="wish-item-card h-100">

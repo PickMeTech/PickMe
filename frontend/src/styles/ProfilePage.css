@@ -123,9 +123,12 @@ button {
     max-width: 100%;
 }
 
-.profile-section {
-    display: flex;
-    gap: 30px;
+.profile-section{
+    display:flex;
+    align-items:flex-start;
+    gap:2rem;          /* або 20 px – як зручно */
+    padding:2rem;
+    margin-top:1.5rem; /* ← опускаємо блок на ~24 px */
 }
 
 .avatar {
