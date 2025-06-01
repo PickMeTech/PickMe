@@ -7,7 +7,7 @@ const memoizedFetch = memoize();
 export class WishApi {
     async createWish(wishListId, wishData) {
         const {title, description, price, url, imageUrl} = wishData;
-        const res = await fetch(`${API_BASE}/wishlists/${wishListId}/wishes`, {
+        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
@@ -18,7 +18,7 @@ export class WishApi {
     }
 
     async getAllWishes(wishListId) {
-        const res = await memoizedFetch(`${API_BASE}/wishlists/${wishListId}/wishes`, {
+        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Failed to fetch wishes");
@@ -26,7 +26,7 @@ export class WishApi {
     }
 
     async getWish(wishListId, wishId) {
-        const res = await memoizedFetch(`${API_BASE}/wishlists/${wishListId}/wishes/${wishId}`, {
+        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Failed to fetch wish");
@@ -34,7 +34,7 @@ export class WishApi {
     }
 
     async getOldestWish(wishListId) {
-        const res = await memoizedFetch(`${API_BASE}/wishlists/${wishListId}/wishes/peek-oldest`, {
+        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/peek-oldest`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Failed to fetch oldest wish");
@@ -42,7 +42,7 @@ export class WishApi {
     }
 
     async getNewestWish(wishListId) {
-        const res = await memoizedFetch(`${API_BASE}/wishlists/${wishListId}/wishes/peek-newest`, {
+        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/peek-newest`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Failed to fetch newest wish");
@@ -51,7 +51,7 @@ export class WishApi {
 
     async updateWish(wishListId, wishId, wishData) {
         const {title, description, price, url, imageUrl} = wishData;
-        const res = await fetch(`${API_BASE}/wishlists/${wishListId}/wishes/${wishId}`, {
+        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
             method: "PUT",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
@@ -62,7 +62,7 @@ export class WishApi {
     }
 
     async deleteWish(wishListId, wishId) {
-        const res = await fetch(`${API_BASE}/wishlists/${wishListId}/wishes/${wishId}`, {
+        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
             method: "DELETE",
             credentials: "include"
         });
@@ -70,7 +70,7 @@ export class WishApi {
     }
 
     async addWishFromBook(wishListId, bookData) {
-        const res = await fetch(`${API_BASE}/wishlists/${wishListId}/wishes/from-book`, {
+        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/from-book`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},

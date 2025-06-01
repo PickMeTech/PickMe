@@ -7,7 +7,7 @@ export class WishListAPI {
     async createWishList(userId, wishListData) {
         const {name, description} = wishListData;
         const res = await fetch(
-            `${API_BASE}/users/${userId}/wishlists`,
+            `${API_BASE}/api/users/${userId}/wishlists`,
             {
                 method: "POST",
                 credentials: "include",
@@ -21,7 +21,7 @@ export class WishListAPI {
 
     async getAllWishLists(userId) {
         const res = await memoizedFetch(
-            `${API_BASE}/users/${userId}/wishlists`,
+            `${API_BASE}/api/users/${userId}/wishlists`,
             {credentials: "include"}
         );
         if (!res.ok) throw new Error("Failed to fetch wish lists");
@@ -30,7 +30,7 @@ export class WishListAPI {
 
     async getWishList(userId, wishListId) {
         const res = await memoizedFetch(
-            `${API_BASE}/users/${userId}/wishlists/${wishListId}`,
+            `${API_BASE}/api/users/${userId}/wishlists/${wishListId}`,
             {credentials: "include"}
         );
         if (!res.ok) throw new Error("Failed to fetch wish list");
@@ -40,7 +40,7 @@ export class WishListAPI {
     async updateWishList(userId, wishListId, wishListData) {
         const {name, description} = wishListData;
         const res = await fetch(
-            `${API_BASE}/users/${userId}/wishlists/${wishListId}`,
+            `${API_BASE}/api/users/${userId}/wishlists/${wishListId}`,
             {
                 method: "PUT",
                 credentials: "include",
@@ -54,7 +54,7 @@ export class WishListAPI {
 
     async deleteWishList(userId, wishListId) {
         const res = await fetch(
-            `${API_BASE}/users/${userId}/wishlists/${wishListId}`,
+            `${API_BASE}/api/users/${userId}/wishlists/${wishListId}`,
             {
                 method: "DELETE",
                 credentials: "include"

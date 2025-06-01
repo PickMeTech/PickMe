@@ -24,7 +24,7 @@ export class UserApi {
     }
 
     async me() {
-        const res =  await fetch(`${API_BASE}/users/me`, {
+        const res =  await fetch(`${API_BASE}/api/users/me`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Not authenticated");
