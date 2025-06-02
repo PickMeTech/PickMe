@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
 import Profile from "../assets/avatar.png";
@@ -9,6 +9,7 @@ import Email from "../assets/email-button.png";
 import Share from "../assets/share-button.png";
 import Edit from "../assets/edit-button1.png";
 import "../styles/ProfilePage.css";
+import EditProfile from "@/components/EditProfile";
 
 const ProfileHeader = () => {
     const [user, setUser] = useState({
@@ -19,6 +20,7 @@ const ProfileHeader = () => {
         bio: "",
         socials: [],
     });
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -26,17 +28,28 @@ const ProfileHeader = () => {
                 const data = await userApi.me();
                 setUser(data);
             } catch (error) {
-                console.error('Failed to fetch user data:', error);
+                console.error("Failed to fetch user data:", error);
             }
         };
 
         fetchUserData();
     }, []);
 
+    const handleSave = (updatedUser) => {
+        setUser(updatedUser);
+    };
+
     return (
         <div className="profile-header">
             <Header />
-            <ProfileSection user={user} />
+            <ProfileSection user={user} onEdit={() => setEditModalOpen(true)} />
+
+            <EditProfile
+                isOpen={editModalOpen}
+                onClose={() => setEditModalOpen(false)}
+                initialUserData={user}
+                onSave={handleSave}
+            />
         </div>
     );
 };
@@ -44,7 +57,7 @@ const ProfileHeader = () => {
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const dropdownRef = React.useRef(null);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const onClickOutside = (e) => {
@@ -58,7 +71,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <img src={Logo} className="logo" alt="Logo"/>
+            <img src={Logo} className="logo" alt="Logo" />
             <div className="search-field">
                 <div className="search-text">
                     <input
@@ -68,7 +81,7 @@ const Header = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <img src={Search} className="search-icon" alt="Search"/>
+                    <img src={Search} className="search-icon" alt="Search" />
                 </div>
             </div>
             <div className="dropdown" ref={dropdownRef}>
@@ -112,9 +125,13 @@ const Header = () => {
     );
 };
 
-const ProfileSection = ({user}) => (
+const ProfileSection = ({ user, onEdit }) => (
     <div className="profile-section">
-        <img src={Profile} className="avatar" alt="Profile"/>
+        <img
+            src={user.profileImageUrl || Profile}
+            className="avatar"
+            alt="Profile"
+        />
         <div className="profile-details">
             <div className="details-header">
                 <div className="user-info">
@@ -123,17 +140,23 @@ const ProfileSection = ({user}) => (
                 </div>
                 <div className="actions">
                     <button className="icon-button">
-                        <img src={Share} alt="Share"/>
+                        <img src={Share} alt="Share" />
                     </button>
-                    <button className="icon-button">
-                        <img src={Edit} alt="Edit"/>
+                    <button
+                        className="icon-button"
+                        onClick={onEdit}
+                    >
+                        <img src={Edit} alt="Edit" />
                     </button>
                 </div>
             </div>
 
             <span className="hint">about me</span>
-            <p className="bio">{user.bio ? user.bio :
-                <span className="hint">tell the world what you want to pick :)</span>}</p>
+            <p className="bio">
+                {user.bio
+                    ? user.bio
+                    : <span className="hint">tell the world what you want to pick :)</span>}
+            </p>
             <div className="social-icons">
                 <button
                     className="social-button"
@@ -143,14 +166,14 @@ const ProfileSection = ({user}) => (
                         }
                     }}
                 >
-                    <img src={Socials} alt="Socials"/>
+                    <img src={Socials} alt="Socials" />
                 </button>
                 {user.email && (
                     <button
                         className="social-button"
                         onClick={() => (window.location = `mailto:${user.email}`)}
                     >
-                        <img src={Email} alt="Email"/>
+                        <img src={Email} alt="Email" />
                     </button>
                 )}
             </div>
@@ -158,9 +181,14 @@ const ProfileSection = ({user}) => (
             <div className="delivery">
                 <span className="hint">pick delivery address</span>
                 <div className="delivery-address">
-                    <span>{user.city}, {user.country}</span>
-                    <button className="delivery-button">
-                        <img src={Edit} alt="Edit"/>
+          <span>
+            {user.city}, {user.country}
+          </span>
+                    <button
+                        className="delivery-button"
+                        onClick={onEdit}
+                    >
+                        <img src={Edit} alt="Edit" />
                     </button>
                 </div>
             </div>
@@ -169,4 +197,4 @@ const ProfileSection = ({user}) => (
 );
 
 export default ProfileHeader;
-export {Header};
+export { Header };

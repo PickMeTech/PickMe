@@ -126,10 +126,9 @@ button {
 .profile-section{
     display:flex;
     align-items:flex-start;
-    gap:2rem;          /* або 20 px – як зручно */
+    gap:2rem;
     padding:2rem;
-    margin-top:1.5rem; /* ← опускаємо блок на ~24 px */
-}
+    margin-top:1.5rem;
 
 .avatar {
     width: 150px;

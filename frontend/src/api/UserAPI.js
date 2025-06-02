@@ -1,7 +1,7 @@
 import memoize from "./memoize.js";
 import { fileApi } from "./FileAPI.js";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE = "http://localhost:8080";
 
 const memoizedFetch = memoize();
 
@@ -71,7 +71,6 @@ export class UserApi {
         if (!res.ok) throw new Error("Update failed");
         return await res.json();
     }
-
 
     async updateAvatar(userId, file) {
         const imageUrl = await fileApi.uploadImage(file);

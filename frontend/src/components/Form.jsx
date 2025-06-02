@@ -121,6 +121,63 @@ const Form = ({
         );
     }
 
+    if (formType === "edit-profile") {
+        const { profileImageUrl, id, ...restFields } = formData;
+
+        return (
+            <form onSubmit={handleSubmit}>
+                {error && <div className="alert alert-danger">{error}</div>}
+
+                {Object.entries(restFields).map(([key, value]) => {
+                    const label = key
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/^./, str => str.toUpperCase());
+
+                    let inputType = "text";
+                    if (key.toLowerCase().includes("email")) inputType = "email";
+                    else if (key.toLowerCase().includes("url")) inputType = "url";
+                    else if (key.toLowerCase().includes("date")) inputType = "date";
+                    else if (key.toLowerCase().includes("phone")) inputType = "tel";
+                    else inputType = "text";
+
+                    const isTextarea = key === "bio";
+
+                    return (
+                        <div className="row mb-3" key={key}>
+                            <label htmlFor={key} className="col-md-3 control-label">
+                                {label}
+                            </label>
+                            <div className="col-md-9">
+                                {isTextarea ? (
+                                    <textarea
+                                        id={key}
+                                        className="form-control"
+                                        rows={3}
+                                        value={value || ""}
+                                        onChange={e => updateFormData(key, e.target.value)}
+                                    />
+                                ) : (
+                                    <input
+                                        id={key}
+                                        type={inputType}
+                                        className="form-control"
+                                        value={value || ""}
+                                        onChange={e => updateFormData(key, e.target.value)}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+
+                <div className="d-grid gap-2 mt-3">
+                    <Button type="submit" style={{ width: "100%" }}>
+                        {buttonText || "Save Changes"}
+                    </Button>
+                </div>
+            </form>
+        );
+    }
 
     const renderLoginForm = () => (
         <>
