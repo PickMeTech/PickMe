@@ -5,6 +5,7 @@ import com.pickme.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,52 +25,37 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Profile("prod")
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserRepository userRepository) throws Exception {
         http
                 .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .authenticationProvider(authenticationProvider(userRepository))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                "/api/users/register",
+                                "/api/auth/login",
+                                "/css/**",
+                                "/js/**"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .exceptionHandling(e -> e
-                        .authenticationEntryPoint(
-                                (new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                        )
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
-                    .authorizeHttpRequests((authorize) -> authorize
-                            .requestMatchers(
-                                    "/api/users/register",
-                                    "/login",
-                                    "/css/**",
-                                    "/js/**"
-                            ).permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .cors(Customizer.withDefaults())
-                    .formLogin(form -> form
-                            .defaultSuccessUrl("/api/users/me", true)
-                            .permitAll()
-                    )
-                    .logout(logout -> logout
-                            .logoutUrl("/logout")
-                            .logoutSuccessUrl("/")
-                            .invalidateHttpSession(true)
-                            .deleteCookies("JSESSIONID")
-                    )
-                    .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
