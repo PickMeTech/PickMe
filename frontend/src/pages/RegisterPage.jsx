@@ -23,6 +23,7 @@ const RegisterPage = () => {
         try {
             const response = await userApi.register(data);
             console.log("Registration successful:", response);
+            await userApi.login(data.email, data.password);
             navigate("/me");
         } catch (error) {
             console.error("Registration error:", error);
