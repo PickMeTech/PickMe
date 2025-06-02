@@ -35,10 +35,6 @@ const WishLists = () => {
     };
 
     useEffect(() => {
-        fetchInitialData();
-    }, [fetchInitialData]);
-
-    useEffect(() => {
         const timeoutId = setTimeout(() => {
             setFilteredLists(
                 lists.filter(list =>
@@ -46,6 +42,7 @@ const WishLists = () => {
                 )
             );
         }, 300);
+
 
         return () => clearTimeout(timeoutId);
     }, [lists, search]);
