@@ -1,17 +1,17 @@
 import memoize from "./memoize.js";
 import { fileApi } from "./FileAPI.js";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = "/api";
 
 const memoizedFetch = memoize();
 
 export class UserApi {
-    async login(emailOrUsername, password) {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
+    async login(usernameOrEmail, password) {
+        const res = await fetch(`${API_BASE}/auth/login`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({username: emailOrUsername, password})
+            body: JSON.stringify({usernameOrEmail: usernameOrEmail, password})
         });
         if (!res.ok) throw new Error("Login failed");
         return res.json();
@@ -25,7 +25,7 @@ export class UserApi {
     }
 
     async me() {
-        const res =  await fetch(`${API_BASE}/api/users/me`, {
+        const res =  await fetch(`${API_BASE}/users/me`, {
             credentials: "include"
         });
         if (!res.ok) throw new Error("Not authenticated");
@@ -39,7 +39,7 @@ export class UserApi {
             birthDate, name, surname
         } = userData;
 
-        const res = await fetch(`${API_BASE}/api/users/register`, {
+        const res = await fetch(`${API_BASE}/users/register`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
@@ -63,7 +63,7 @@ export class UserApi {
     }
 
     async updateProfile(userId, updateDto) {
-        const res = await fetch(`${API_BASE}/api/users/${userId}`, {
+        const res = await fetch(`${API_BASE}/users/${userId}`, {
             method: "PUT",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
