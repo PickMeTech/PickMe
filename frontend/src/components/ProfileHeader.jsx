@@ -118,6 +118,11 @@ const Header = () => {
                                 Login
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/logout" className="dropdown-item">
+                                Logout
+                            </NavLink>
+                        </li>
                     </ul>
                 )}
             </div>
@@ -125,7 +130,7 @@ const Header = () => {
     );
 };
 
-const ProfileSection = ({ user, onEdit }) => (
+const ProfileSection = ({user, onEdit}) => (
     <div className="profile-section">
         <img
             src={user.profileImageUrl || Profile}
