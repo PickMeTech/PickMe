@@ -6,12 +6,12 @@ const API_BASE = "/api";
 const memoizedFetch = memoize();
 
 export class UserApi {
-    async login(emailOrUsername, password) {
+    async login(usernameOrEmail, password) {
         const res = await fetch(`${API_BASE}/auth/login`, {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({username: emailOrUsername, password})
+            body: JSON.stringify({usernameOrEmail: usernameOrEmail, password})
         });
         if (!res.ok) throw new Error("Login failed");
         return res.json();
