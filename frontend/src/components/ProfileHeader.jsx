@@ -28,11 +28,13 @@ const ProfileHeader = () => {
                 const data = await userApi.me();
                 setUser(data);
             } catch (error) {
-                console.error("Failed to fetch user data:", error);
+                console.log("User not authenticated:", error);
             }
         };
 
-        fetchUserData();
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            fetchUserData();
+        }
     }, []);
 
     const handleSave = (updatedUser) => {
@@ -130,7 +132,7 @@ const Header = () => {
     );
 };
 
-const ProfileSection = ({user, onEdit}) => (
+const ProfileSection = ({ user, onEdit }) => (
     <div className="profile-section">
         <img
             src={user.profileImageUrl || Profile}
@@ -186,9 +188,9 @@ const ProfileSection = ({user, onEdit}) => (
             <div className="delivery">
                 <span className="hint">pick delivery address</span>
                 <div className="delivery-address">
-          <span>
-            {user.city}, {user.country}
-          </span>
+                    <span>
+                        {user.city}, {user.country}
+                    </span>
                     <button
                         className="delivery-button"
                         onClick={onEdit}
@@ -202,4 +204,4 @@ const ProfileSection = ({user, onEdit}) => (
 );
 
 export default ProfileHeader;
-export { Header };
+export { Header, ProfileSection };

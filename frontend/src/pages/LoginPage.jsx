@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
 import Form from "@/components/Form";
-import {Header} from "@/components/ProfileHeader";
+import { Header } from "@/components/ProfileHeader";
 
 const LoginPage = () => {
     const [error, setError] = useState(null);
@@ -12,6 +12,7 @@ const LoginPage = () => {
         setError(null);
         try {
             await userApi.login(data.username, data.password);
+            localStorage.setItem("isLoggedIn", "true");
             console.log("Login successful");
             navigate("/me");
         } catch (error) {

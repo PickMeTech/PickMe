@@ -18,7 +18,7 @@ export class UserApi {
     }
 
     async logout() {
-        await fetch(`${API_BASE}/logout`, {
+        await fetch(`${API_BASE}/api/logout`, {
             method: "POST",
             credentials: "include"
         });
