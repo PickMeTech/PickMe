@@ -53,8 +53,7 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                )
-                .httpBasic(Customizer.withDefaults());
+                );
 
         return http.build();
     }

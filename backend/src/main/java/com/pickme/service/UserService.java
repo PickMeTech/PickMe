@@ -33,7 +33,6 @@ public class UserService {
     @Loggable(level = LogLevel.INFO)
     public User createUser(UserRegistrationRequest dto) {
         User user = userMapper.mapFromRegistrationRequest(dto);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
