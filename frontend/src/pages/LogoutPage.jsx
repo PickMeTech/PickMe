@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
+import WithAuth from "@/components/WithAuth";
 
 const LogoutPage = () => {
     const navigate = useNavigate();
@@ -21,4 +22,4 @@ const LogoutPage = () => {
     return null;
 };
 
-export default LogoutPage;
+export default WithAuth(LogoutPage);

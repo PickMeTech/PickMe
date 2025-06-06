@@ -1,36 +1,44 @@
 import memoize from "./memoize.js";
+import concLimiter from "./limiter.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 const memoizedFetch = memoize();
+const limiter = new concLimiter({ maxRequests: 5 });
 
 export class WishApi {
     async createWish(wishListId, wishData) {
-        const {title, description, price, url, imageUrl} = wishData;
-        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
-            method: "POST",
-            credentials: "include",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(wishData)
+        return limiter.enqueue(async () => {
+            const {title, description, price, url, imageUrl} = wishData;
+            const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
+                method: "POST",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(wishData)
+            });
+            if (!res.ok) throw new Error("Failed to create wish");
+            return res.json();
         });
-        if (!res.ok) throw new Error("Failed to create wish");
-        return res.json();
     }
 
     async getAllWishes(wishListId) {
-        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
-            credentials: "include"
+        return limiter.enqueue(async () => {
+            const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes`, {
+                credentials: "include"
+            });
+            if (!res.ok) throw new Error("Failed to fetch wishes");
+            return res.json();
         });
-        if (!res.ok) throw new Error("Failed to fetch wishes");
-        return res.json();
     }
 
     async getWish(wishListId, wishId) {
-        const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
-            credentials: "include"
+        return limiter.enqueue(async () => {
+            const res = await memoizedFetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
+                credentials: "include"
+            });
+            if (!res.ok) throw new Error("Failed to fetch wish");
+            return res.json();
         });
-        if (!res.ok) throw new Error("Failed to fetch wish");
-        return res.json();
     }
 
     async getOldestWish(wishListId) {
@@ -50,23 +58,27 @@ export class WishApi {
     }
 
     async updateWish(wishListId, wishId, wishData) {
-        const {title, description, price, url, imageUrl} = wishData;
-        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(wishData)
+        return limiter.enqueue(async () => {
+            const {title, description, price, url, imageUrl} = wishData;
+            const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(wishData)
+            });
+            if (!res.ok) throw new Error("Failed to update wish");
+            return res.json();
         });
-        if (!res.ok) throw new Error("Failed to update wish");
-        return res.json();
     }
 
     async deleteWish(wishListId, wishId) {
-        const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
-            method: "DELETE",
-            credentials: "include"
+        return limiter.enqueue(async () => {
+            const res = await fetch(`${API_BASE}/api/wishlists/${wishListId}/wishes/${wishId}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            if (!res.ok) throw new Error("Failed to delete wish");
         });
-        if (!res.ok) throw new Error("Failed to delete wish");
     }
 
     async addWishFromBook(wishListId, bookData) {
