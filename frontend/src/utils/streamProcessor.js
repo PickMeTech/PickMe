@@ -1,11 +1,11 @@
-export async function streamProcessor(url, onProgress) {
+export async function streamProcessor(url) {
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Error while loading: ${response.status} ${response.statusText}`);
     }
 
-    const contentLengthHeader = response.headers.get("Content-Length");
-    const totalBytes = contentLengthHeader ? parseInt(contentLengthHeader, 10) : null;
+    const contentLength = response.headers.get("Content-Length");
+    const totalBytes = contentLength ? parseInt(contentLength, 10) : null;
 
     const reader = response.body.getReader();
     const chunks = [];
@@ -16,11 +16,6 @@ export async function streamProcessor(url, onProgress) {
         if (done) break;
         chunks.push(value);
         loadedBytes += value.length;
-
-        if (typeof onProgress === "function") {
-            onProgress(loadedBytes, totalBytes);
-        }
     }
-
     return new Blob(chunks);
 }

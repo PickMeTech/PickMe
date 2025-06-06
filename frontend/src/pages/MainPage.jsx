@@ -16,7 +16,7 @@ const MainPage = () => {
             <div className="main-page">
                 <h1 className="main-heading">
                     <span className="hello-text">Hello world!</span>
-                    <span className="wish-text">Pick what you really want</span>
+                    <span className="wish-text">Pick what you really wish</span>
                 </h1>
 
                 <div className="slideshow-wrapper">
