@@ -3,8 +3,6 @@ import { fileApi } from "./FileAPI.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-const memoizedFetch = memoize();
-
 export class UserApi {
     async login(usernameOrEmail, password) {
         const res = await fetch(`${API_BASE}/api/auth/login`, {
