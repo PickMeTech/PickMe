@@ -1,4 +1,3 @@
-// src/components/EditProfile.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { userApi } from "@/api/UserAPI";
 import { fileApi } from "@/api/FileAPI";
@@ -6,6 +5,7 @@ import Form from "@/components/Form";
 import ModalWindow from "@/components/ModalWindow";
 import Button from "@/components/Button";
 import ProfilePlaceholder from "@/assets/avatar.png";
+import withAuth from "@/components/WithAuth.jsx";
 
 const EditProfile = ({ triggerButtonText = "Edit Profile" }) => {
     const [user, setUser] = useState(null);
@@ -118,4 +118,4 @@ const EditProfile = ({ triggerButtonText = "Edit Profile" }) => {
     );
 };
 
-export default EditProfile;
+export default withAuth(EditProfile);

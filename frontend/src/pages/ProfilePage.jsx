@@ -1,4 +1,5 @@
 import React from "react";
+import withAuth from "@/components/WithAuth.jsx";
 import ProfileHeader from "@/components/ProfileHeader.jsx";
 import WishLists from "@/components/Wishlists.jsx";
 import "@/styles/ProfilePage.css";
@@ -14,4 +15,4 @@ const ProfilePage = () => {
     );
 };
 
-export default ProfilePage;
+export default withAuth(ProfilePage);

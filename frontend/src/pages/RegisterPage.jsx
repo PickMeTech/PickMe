@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/UserAPI";
 import { Header } from "@/components/ProfileHeader";
-import Form from "@/components/Form"; // Adjust import path as needed
+import Form from "@/components/Form";
 
 const RegisterPage = () => {
     const [error, setError] = useState(null);
@@ -23,7 +23,10 @@ const RegisterPage = () => {
         try {
             const response = await userApi.register(data);
             console.log("Registration successful:", response);
-            // await userApi.login(data.email, data.password);
+
+            await userApi.login(data.email || data.username, data.password);
+            localStorage.setItem("isLoggedIn", "true");
+
             navigate("/me");
         } catch (error) {
             console.error("Registration error:", error);
@@ -34,15 +37,15 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-                        <Form
-                            formType="register"
-                            onSubmit={handleRegistrationForm}
-                            error={error}
-                            initialData={formData}
-                            buttonText="Complete Registration"
-                            buttonStyle={{ backgroundColor: "#F25081", color: "white" }}
-                            showSteps={true}
-                        />
+            <Form
+                formType="register"
+                onSubmit={handleRegistrationForm}
+                error={error}
+                initialData={formData}
+                buttonText="Complete Registration"
+                buttonStyle={{ backgroundColor: "#F25081", color: "white" }}
+                showSteps={true}
+            />
         </>
     );
 };
