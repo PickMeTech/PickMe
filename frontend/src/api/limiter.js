@@ -6,7 +6,7 @@ export default class concLimiter {
     }
 
     processQueue() {
-        while (this.queue.length > 0 && this.activeRequests <= this.maxRequests) {
+        while (this.queue.length > 0 && this.activeRequests < this.maxRequests) {
             const { fn, resolve, reject } = this.queue.shift();
             this.activeRequests++;
             fn().then(resolve).catch(reject).finally(()=> {
