@@ -32,7 +32,6 @@ public class UserRegistrationRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     private String email;
-
     private String phoneNumber;
 
     @Past(message = "Birth date must be in the past")

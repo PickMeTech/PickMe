@@ -1,9 +1,11 @@
 package com.pickme.dto.auth;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 public class LoginResponse {
     private String message;

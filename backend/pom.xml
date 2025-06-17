@@ -94,6 +94,13 @@
 			<artifactId>bcpkix-jdk15to18</artifactId>
 			<version>1.70</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.libphonenumber</groupId>
+			<artifactId>libphonenumber</artifactId>
+			<version>8.12.10</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

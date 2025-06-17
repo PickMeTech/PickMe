@@ -3,9 +3,12 @@ package com.pickme.mapper;
 import com.pickme.dto.user.UserProfileResponse;
 import com.pickme.dto.user.UserRegistrationRequest;
 import com.pickme.dto.user.UserUpdateRequest;
+import com.pickme.model.Role;
 import com.pickme.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 public class UserMapper {
@@ -47,6 +50,7 @@ public class UserMapper {
         user.setCountry(dto.getCountry());
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
+        user.setRoles(Set.of(Role.ROLE_USER));
         return user;
     }
 
